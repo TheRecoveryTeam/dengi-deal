@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        >
+
+        <TextView
+            android:id="@+id/appNameTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/app_name"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:textSize="40sp"
+            />
+
+        <TextView
+            android:id="@+id/authPhoneInputLabel"
+            android:layout_width="@dimen/phoneInputWidth"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/appNameTitle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/spacingM"
+            android:text="@string/authPhoneInputLabel"
+            android:labelFor="@id/authPhoneInputLabel"
+            />
+
+        <EditText
+            android:id="@+id/authPhoneInput"
+            android:layout_width="@dimen/phoneInputWidth"
+            android:layout_height="@dimen/inputHeight"
+            android:layout_below="@id/authPhoneInputLabel"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/spacingS"
+            android:digits="0123456789+"
+            android:gravity="center_horizontal"
+            android:inputType="phone"
+            android:hint="@string/phoneNumberText"
+            android:autofillHints=".AUTOFILL_HINT_PHONE_NUMBER_DEVICE"
+            />
+
+        <Button
+            android:layout_alignRight="@id/authPhoneInput"
+            android:layout_marginTop="@dimen/spacingM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/authPhoneInput"
+            android:background="@color/colorAccent"
+            android:textColor="@color/white"
+            android:text="@string/receiveCodeBtnText"
+            android:paddingLeft="@dimen/spacingM"
+            android:paddingRight="@dimen/spacingM"
+            />
+    </RelativeLayout>
+
+</RelativeLayout>
