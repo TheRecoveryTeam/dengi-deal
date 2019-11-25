@@ -1,8 +1,7 @@
-package ru.moneydeal.app;
+package ru.moneydeal.app.auth;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
+import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -10,14 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.moneydeal.app.ApplicationModified;
 import ru.moneydeal.app.network.ApiRepo;
 import ru.moneydeal.app.network.UserApi;
 
@@ -25,8 +22,10 @@ import ru.moneydeal.app.network.UserApi;
 public class AuthRepo {
 
     private final ApiRepo mApiRepo;
-    public AuthRepo(ApiRepo apiRepo) {
+    private final ApplicationModified mContext;
+    public AuthRepo(ApiRepo apiRepo, ApplicationModified context) {
         mApiRepo = apiRepo;
+        mContext = context;
     }
 
     @NonNull
@@ -34,17 +33,8 @@ public class AuthRepo {
         return ApplicationModified.from(context).getAuthRepo();
     }
 
-    private String mCurrentUser;
     private MutableLiveData<AuthProgress> mAuthProgress;
-    private String mToken;
-
     public LiveData<AuthProgress> login(@NonNull String login, @NonNull String password) {
-        if (TextUtils.equals(login, mCurrentUser) && mAuthProgress.getValue() == AuthProgress.IN_PROGRESS) {
-            return mAuthProgress;
-        } else if (!TextUtils.equals(login, mCurrentUser) && mAuthProgress != null) {
-            mAuthProgress.postValue(AuthProgress.FAILED);
-        }
-        mCurrentUser = login;
         mAuthProgress = new MutableLiveData<>(AuthProgress.IN_PROGRESS);
         login(mAuthProgress, login, password);
         return mAuthProgress;
@@ -59,21 +49,37 @@ public class AuthRepo {
             public void onResponse(Call<UserApi.ResponsePlain> call,
                                    Response<UserApi.ResponsePlain> response) {
                 if (response.body() != null) {
-                    mToken = response.body().token;
-                }
+                    String token = response.body().token;
 
-                mAuthProgress.postValue(AuthProgress.SUCCESS);
+
+                    AsyncTask.execute(() -> {
+                        mContext.getDB().getAuthDao().reset();
+
+                        mContext.getDB().getAuthDao().reset();
+                        AuthEntity authEntity = new AuthEntity(login, token);
+                        mContext.getDB().getAuthDao().insert(authEntity);
+
+                        List<AuthEntity> users = mContext.getDB().getAuthDao().getUser();
+                        int userCount = users.size();
+                        Log.d("AuthRepo", "user count: " + userCount);
+                        if (userCount > 0) {
+                            AuthEntity user = users.get(0);
+                            Log.d("AuthRepo", "current user token: " + user.login + " " + user.token);
+                        }
+                    });
+                }
+                progress.postValue(AuthProgress.SUCCESS);
             }
 
             @Override
             public void onFailure(Call<UserApi.ResponsePlain> call, Throwable t) {
-                mAuthProgress.postValue(AuthProgress.FAILED);
+                progress.postValue(AuthProgress.FAILED);
             }
         });
     }
 
 
-    enum AuthProgress {
+    public enum AuthProgress {
         IN_PROGRESS,
         SUCCESS,
         FAILED

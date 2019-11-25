@@ -10,6 +10,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import java.util.Objects;
 
+import ru.moneydeal.app.auth.AuthRepo;
+
 @SuppressWarnings("WeakerAccess")
 public class RegisterViewModel extends AndroidViewModel {
 
