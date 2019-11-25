@@ -36,6 +36,7 @@ public class AuthRepo {
 
     private String mCurrentUser;
     private MutableLiveData<AuthProgress> mAuthProgress;
+    private String mToken;
 
     public LiveData<AuthProgress> login(@NonNull String login, @NonNull String password) {
         if (TextUtils.equals(login, mCurrentUser) && mAuthProgress.getValue() == AuthProgress.IN_PROGRESS) {
@@ -53,17 +54,19 @@ public class AuthRepo {
     private void login(final MutableLiveData<AuthProgress> progress, @NonNull final String login, @NonNull final String password) {
         UserApi api = mApiRepo.getUserApi();
 
-        api.register(new UserApi.UserPlain(login, password)).enqueue(new Callback<UserApi.ResponsePlain>() {
+        api.register(login, password).enqueue(new Callback<UserApi.ResponsePlain>() {
             @Override
             public void onResponse(Call<UserApi.ResponsePlain> call,
                                    Response<UserApi.ResponsePlain> response) {
-                Log.d("ocko", response.toString());
+                if (response.body() != null) {
+                    mToken = response.body().token;
+                }
+
                 mAuthProgress.postValue(AuthProgress.SUCCESS);
             }
 
             @Override
             public void onFailure(Call<UserApi.ResponsePlain> call, Throwable t) {
-                Log.d("ocko1", "jopa1", t);
                 mAuthProgress.postValue(AuthProgress.FAILED);
             }
         });

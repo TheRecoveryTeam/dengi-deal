@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 
 import ru.moneydeal.app.pages.HistoryFragment;
+import ru.moneydeal.app.pages.LoginFragment;
 import ru.moneydeal.app.pages.RegisterFragment;
 import ru.moneydeal.app.pages.MainFragment;
 
@@ -46,6 +47,13 @@ public class MainActivity extends AppCompatActivity implements IActivity {
     public void showHistory() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new HistoryFragment())
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public void showLogin() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new LoginFragment())
                 .addToBackStack(null)
                 .commit();
     }

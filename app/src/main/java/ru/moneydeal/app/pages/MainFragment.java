@@ -15,6 +15,7 @@ import ru.moneydeal.app.R;
 
 public class MainFragment extends Fragment {
     private Button mRegisterButton;
+    private Button mLoginButton;
 
     @Nullable
     @Override
@@ -22,12 +23,13 @@ public class MainFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_fragment, container, false);
 
+        bindRegisterButton(view);
         bindLoginButton(view);
 
         return view;
     }
 
-    private void bindLoginButton(View view) {
+    private void bindRegisterButton(View view) {
         mRegisterButton = view.findViewById(R.id.registerButton);
 
         mRegisterButton.setOnClickListener(v -> {
@@ -38,6 +40,20 @@ public class MainFragment extends Fragment {
             }
 
             activity.showRegister();
+        });
+    }
+
+    private void bindLoginButton(View view) {
+        mLoginButton = view.findViewById(R.id.signInButton);
+
+        mLoginButton.setOnClickListener(v -> {
+            IActivity activity = (IActivity) getActivity();
+
+            if (activity == null) {
+                return;
+            }
+
+            activity.showLogin();
         });
     }
 }

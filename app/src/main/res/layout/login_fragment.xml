@@ -28,7 +28,7 @@
         />
 
     <EditText
-        android:id="@+id/loginInput"
+        android:id="@+id/loginInputLogin"
         android:layout_width="@dimen/phoneInputWidth"
         android:layout_height="@dimen/inputHeight"
         android:layout_below="@id/loginLabel"
@@ -43,7 +43,7 @@
         android:id="@+id/passwordLabel"
         android:layout_width="@dimen/phoneInputWidth"
         android:layout_height="wrap_content"
-        android:layout_below="@id/loginInput"
+        android:layout_below="@id/loginInputLogin"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/spacingM"
         android:text="@string/passwordInputText"
@@ -51,7 +51,7 @@
         />
 
     <EditText
-        android:id="@+id/passwordInput"
+        android:id="@+id/passwordInputLogin"
         android:layout_width="@dimen/phoneInputWidth"
         android:layout_height="@dimen/inputHeight"
         android:layout_below="@id/passwordLabel"
@@ -64,15 +64,15 @@
 
 
     <Button
-        android:id="@+id/registerInnerButton"
+        android:id="@+id/loginInnerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/passwordInput"
+        android:layout_below="@id/passwordInputLogin"
         android:layout_marginTop="@dimen/spacingM"
         android:background="@color/colorAccent"
         android:paddingLeft="@dimen/spacingM"
         android:paddingRight="@dimen/spacingM"
-        android:text="@string/registerButtonText"
+        android:text="@string/signInButtonText"
         android:layout_centerHorizontal="true"
         android:textColor="@color/white" />
 
