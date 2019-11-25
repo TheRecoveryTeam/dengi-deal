@@ -1,6 +1,10 @@
 <resources>
-    <string name="app_name">Money Deal</string>
-    <string name="authPhoneInputLabel">Введите номер телефона</string>
-    <string name="receiveCodeBtnText">Получить код</string>
-    <string name="phoneNumberText">Номер телефона</string>
+    <string name="appName">Money Deal</string>
+    <string name="historyName">History</string>
+    <string name="loginInputText">Login</string>
+    <string name="passwordInputText">Password</string>
+    <string name="signInButtonText">Sign In</string>
+    <string name="registerButtonText">Register</string>
+    <string name="loginText">Your login</string>
+    <string name="passwordText">Your password</string>
 </resources>

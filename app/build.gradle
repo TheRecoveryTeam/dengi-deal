@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        targetCompatibility = 1.8
+        sourceCompatibility = 1.8
+    }
 }
 
 dependencies {
@@ -26,4 +30,13 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.moshi:moshi:1.7.0'
+    implementation 'com.squareup.retrofit2:converter-moshi:2.1.0'
+
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.2.0-rc01'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-rc01'
 }
