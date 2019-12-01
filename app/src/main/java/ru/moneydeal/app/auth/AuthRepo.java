@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -13,7 +12,6 @@ import java.util.List;
 
 import ru.moneydeal.app.ApplicationModified;
 import ru.moneydeal.app.network.ApiRepo;
-import ru.moneydeal.app.network.BaseResponse;
 import ru.moneydeal.app.network.ErrorResponse;
 import ru.moneydeal.app.network.ResponseCallback;
 import ru.moneydeal.app.network.UserApi;
@@ -25,13 +23,13 @@ public class AuthRepo {
     private final ApiRepo mApiRepo;
     private final AuthDao mAuthDao;
 
-    private MutableLiveData<AuthProgress> mAuthProgress;
+    private MutableLiveData<OpProgress> mAuthProgress;
 
     public AuthRepo(ApplicationModified context) {
         mTokenRepo = context.getTokenRepo();
         mApiRepo = context.getApis();
         mAuthDao = context.getDB().getAuthDao();
-        mAuthProgress = new MutableLiveData<>(AuthProgress.IN_PROGRESS);
+        mAuthProgress = new MutableLiveData<>(OpProgress.IN_PROGRESS);
     }
 
     @NonNull
@@ -39,59 +37,46 @@ public class AuthRepo {
         return ApplicationModified.from(context).getAuthRepo();
     }
 
-    public LiveData<AuthProgress> checkAuth() {
-        mAuthProgress.setValue(AuthProgress.IN_PROGRESS);
+    public LiveData<OpProgress> checkAuth() {
+        mAuthProgress.setValue(OpProgress.IN_PROGRESS);
 
         AsyncTask.execute(() -> {
             List<AuthEntity> users = mAuthDao.getUsers();
 
             if (users.size() == 0) {
-                mAuthProgress.postValue(AuthProgress.FAILED);
+                mAuthProgress.postValue(OpProgress.FAILED);
                 Log.d("AuthRepo", "has no user");
                 return;
             }
 
             UserApi api = mApiRepo.getUserApi();
-            api.checkAuth().enqueue(new ResponseCallback<UserApi.AuthResponse>(UserApi.AuthResponse.class) {
-                @Override
-                public void onOk(UserApi.AuthResponse response) {
-                    saveUserData(response.data);
-                    mAuthProgress.postValue(AuthProgress.SUCCESS);
-                }
-
-                @Override
-                public void onError(ErrorResponse response) {
-                    Log.d("AuthRepo", "check auth failed " + response.data.message);
-                    mAuthProgress.postValue(AuthProgress.FAILED);
-                }
-            });
+            api.checkAuth().enqueue(new AuthResponseCallback());
         });
 
         return mAuthProgress;
     }
 
-    public LiveData<AuthProgress> register(@NonNull String login, @NonNull String password) {
-        mAuthProgress.setValue(AuthProgress.IN_PROGRESS);
-        register(mAuthProgress, login, password);
-        return mAuthProgress;
-    }
-
-    private void register(final MutableLiveData<AuthProgress> progress, @NonNull final String login, @NonNull final String password) {
+    public LiveData<OpProgress> register(
+            @NonNull String login,
+            @NonNull String password,
+            @NonNull String firstName,
+            @NonNull String lastName
+    ) {
+        mAuthProgress.setValue(OpProgress.IN_PROGRESS);
         UserApi api = mApiRepo.getUserApi();
+        api.register(login, password, firstName, lastName).enqueue(new AuthResponseCallback());
+        return mAuthProgress;
+    }
 
-        api.register(login, password).enqueue(new ResponseCallback<UserApi.AuthResponse>(UserApi.AuthResponse.class) {
-            @Override
-            public void onOk(UserApi.AuthResponse response) {
-                saveUserData(response.data);
-                mAuthProgress.postValue(AuthProgress.SUCCESS);
-            }
-
-            @Override
-            public void onError(ErrorResponse response) {
-                Log.d("AuthRepo", "register failed " + response.data.message);
-                mAuthProgress.postValue(AuthProgress.FAILED);
-            }
-        });
+    public LiveData<OpProgress> login(
+            @NonNull String login,
+            @NonNull String password
+    ) {
+        Log.d("AuthRepo", "login");
+        mAuthProgress.setValue(OpProgress.IN_PROGRESS);
+        UserApi api = mApiRepo.getUserApi();
+        api.login(login, password).enqueue(new AuthResponseCallback());
+        return mAuthProgress;
     }
 
     private void saveUserData(UserApi.AuthData data) {
@@ -109,19 +94,41 @@ public class AuthRepo {
                     token
             );
 
-            Log.d("AuthRepo", "save user data:\n" + data.user.first_name + "\n" + data.user.last_name + "\n" + data.user.login + "\n" + token);
+            Log.d(
+                    "AuthRepo",
+                    "save user data:\n"
+                    + data.user.first_name + "\n"
+                    + data.user.last_name + "\n"
+                    + data.user.login + "\n"
+                    + token
+            );
 
             try {
                 mAuthDao.insert(authEntity);
+                mAuthProgress.postValue(OpProgress.SUCCESS);
             } catch (Exception e) {
-                Log.d("AuthRepo", "can not save user data");
+                Log.d("AuthRepo", "can not save user data " + e.getMessage());
+                mAuthProgress.postValue(OpProgress.FAILED);
             }
         });
     }
 
-    public enum AuthProgress {
+    public enum OpProgress {
         IN_PROGRESS,
         SUCCESS,
         FAILED
+    }
+
+    public class AuthResponseCallback extends ResponseCallback<UserApi.AuthResponse> {
+        @Override
+        public void onOk(UserApi.AuthResponse response) {
+            saveUserData(response.data);
+        }
+
+        @Override
+        public void onError(ErrorResponse response) {
+            Log.d("AuthRepo", "register failed " + response.data.message);
+            mAuthProgress.postValue(OpProgress.FAILED);
+        }
     }
 }

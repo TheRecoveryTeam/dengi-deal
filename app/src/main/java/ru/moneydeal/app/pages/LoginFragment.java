@@ -35,23 +35,35 @@ public class LoginFragment extends Fragment {
         final Button loginButton = view.findViewById(R.id.loginInnerButton);
         final EditText loginInput = view.findViewById(R.id.loginInputLogin);
         final EditText passwordInput = view.findViewById(R.id.passwordInputLogin);
+        final Button goToRegisterButton = view.findViewById(R.id.goToRegisterButton);
 
-        mAuthViewModel.getProgress().observe(getViewLifecycleOwner(), loginState -> {
-            if (loginState == AuthViewModel.LoginState.FAILED) {
+        mAuthViewModel.getProgress().observe(getViewLifecycleOwner(), authState -> {
+            if (authState == AuthViewModel.AuthState.FAILED) {
                 int color = getResources().getColor(android.R.color.holo_red_dark);
 
                 loginInput.setTextColor(color);
                 passwordInput.setTextColor(color);
-            } else if (loginState == AuthViewModel.LoginState.SUCCESS) {
+            } else if (authState == AuthViewModel.AuthState.SUCCESS) {
                 Toast.makeText(getContext(), "Success login", Toast.LENGTH_LONG).show();
                 switchToHistory();
             }
         });
 
-
-        loginButton.setOnClickListener(v -> mAuthViewModel.register(
+        loginButton.setOnClickListener(v -> mAuthViewModel.login(
                 loginInput.getText().toString(),
                 passwordInput.getText().toString()));
+
+        goToRegisterButton.setOnClickListener(v -> switchToRegitster());
+    }
+
+    private void switchToRegitster() {
+        IRouter activity = (IRouter) getActivity();
+
+        if (activity == null) {
+            return;
+        }
+
+        activity.showRegister();
     }
 
     private void switchToHistory() {

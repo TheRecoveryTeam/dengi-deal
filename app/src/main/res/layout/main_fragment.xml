@@ -30,7 +30,7 @@
             android:layout_below="@id/appNameTitle"
             android:background="@color/colorAccent"
             android:textColor="@color/white"
-            android:text="@string/signInButtonText"
+            android:text="@string/login"
             android:paddingLeft="@dimen/spacingM"
             android:paddingRight="@dimen/spacingM"
             />

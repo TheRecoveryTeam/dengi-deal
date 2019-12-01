@@ -3,9 +3,9 @@
     <string name="historyName">History</string>
     <string name="loginInputText">Login</string>
     <string name="passwordInputText">Password</string>
-    <string name="signInButtonText">Sign In</string>
     <string name="registerButtonText">Register</string>
     <string name="loginText">Your login</string>
     <string name="passwordText">Your password</string>
-    <string name="loading">Загрузка</string>
+    <string name="loading">Loading</string>
+    <string name="login">Login</string>
 </resources>

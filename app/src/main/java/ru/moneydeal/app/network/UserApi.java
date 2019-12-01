@@ -1,6 +1,8 @@
 package ru.moneydeal.app.network;
 
 
+import androidx.annotation.NonNull;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -13,8 +15,13 @@ public interface UserApi {
     public static final String LOGIN_ALREADY_EXISTS = "LOGIN_ALREADY_EXISTS";
 
     public static class User {
+        @NonNull
         public String login;
+
+        @NonNull
         public String first_name;
+
+        @NonNull
         public String last_name;
     }
 
@@ -31,7 +38,9 @@ public interface UserApi {
     @POST("register")
     Call<AuthResponse> register(
             @Field("login") String login,
-            @Field("password") String password
+            @Field("password") String password,
+            @Field("first_name") String firstName,
+            @Field("last_name") String lastName
     );
 
     @FormUrlEncoded

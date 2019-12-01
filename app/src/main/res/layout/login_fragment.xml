@@ -72,8 +72,21 @@
         android:background="@color/colorAccent"
         android:paddingLeft="@dimen/spacingM"
         android:paddingRight="@dimen/spacingM"
-        android:text="@string/signInButtonText"
+        android:text="@string/login"
         android:layout_centerHorizontal="true"
         android:textColor="@color/white" />
 
+    <Button
+        android:id="@+id/goToRegisterButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loginInnerButton"
+        android:layout_marginTop="@dimen/spacingM"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="@dimen/spacingM"
+        android:paddingRight="@dimen/spacingM"
+        android:text="@string/registerButtonText"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        />
 </RelativeLayout>

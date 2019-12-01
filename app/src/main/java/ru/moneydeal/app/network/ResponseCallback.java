@@ -12,22 +12,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public abstract class ResponseCallback<R extends BaseResponse> implements Callback<R> {
-    private Class<R> mOkClazz;
-
-    public ResponseCallback(Class<R> okClazz) {
-        mOkClazz = okClazz;
-    }
-
     @Override
     public final void onResponse(Call<R> call, Response<R> response) {
         BaseResponse baseResponse = response.body();
-        if (baseResponse == null) {
-            Log.d("ResponseCallback", "baseResponse == null");
-            createEmptyError();
-            return;
-        }
 
         try {
+            if (baseResponse == null) {
+                Log.d("ResponseCallback", "baseResponse == null");
+                createErrorFromResponse(response.errorBody().string());
+                return;
+            }
             if (baseResponse.status.equals(BaseResponse.STATUS_OK)) {
                 Log.d("ResponseCallback", "status ok");
                 onOk(response.body());
@@ -35,7 +29,7 @@ public abstract class ResponseCallback<R extends BaseResponse> implements Callba
             }
             if (baseResponse.status.equals(BaseResponse.STATUS_ERROR)) {
                 Log.d("ResponseCallback", "status error");
-                createErrorFromResponse(response.raw().body().string());
+                createErrorFromResponse(response.errorBody().string());
                 return;
             }
             Log.d("ResponseCallback", "undefined status: " + baseResponse.status);
@@ -54,14 +48,6 @@ public abstract class ResponseCallback<R extends BaseResponse> implements Callba
 
     private void createEmptyError() {
         onError(new ErrorResponse());
-    }
-
-    private void createOkFromResponse(String json) throws IOException {
-        Moshi moshi = new Moshi.Builder().build();
-        JsonAdapter<R> jsonAdapter = moshi.adapter(mOkClazz);
-
-        R response = jsonAdapter.fromJson(json);
-        onOk(response);
     }
 
     private void createErrorFromResponse(String json) throws IOException {

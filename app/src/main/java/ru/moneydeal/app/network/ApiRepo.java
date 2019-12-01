@@ -1,6 +1,7 @@
 package ru.moneydeal.app.network;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
@@ -9,8 +10,11 @@ public class ApiRepo {
     private final OkHttpClient mOkHttpClient;
 
     public ApiRepo(AuthorizationTokenInterceptor.ITokenRepo tokenRepo) {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+
         mOkHttpClient = new OkHttpClient()
                 .newBuilder()
+                .addInterceptor(logging)
                 .addInterceptor(new AuthorizationTokenInterceptor(tokenRepo))
                 .build();
 

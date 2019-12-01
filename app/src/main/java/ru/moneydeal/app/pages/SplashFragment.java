@@ -27,10 +27,10 @@ public class SplashFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mAuthViewModel = new ViewModelProvider(getActivity()).get(AuthViewModel.class);
 
-        mAuthViewModel.getProgress().observe(getViewLifecycleOwner(), loginState -> {
-            if (loginState == AuthViewModel.LoginState.SUCCESS) {
+        mAuthViewModel.getProgress().observe(getViewLifecycleOwner(), authState -> {
+            if (authState == AuthViewModel.AuthState.SUCCESS) {
                 switchToHistory();
-            } else if (loginState == AuthViewModel.LoginState.FAILED) {
+            } else if (authState == AuthViewModel.AuthState.FAILED) {
                 switchToRegister();
             }
         });

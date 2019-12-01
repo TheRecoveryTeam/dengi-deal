@@ -15,73 +15,114 @@ import ru.moneydeal.app.auth.AuthRepo;
 @SuppressWarnings("WeakerAccess")
 public class AuthViewModel extends AndroidViewModel {
 
-    private RegisterData mLastRegisterData = new RegisterData("", "");
+    private RegisterData mLastRegisterData = new RegisterData("", "", "", "");
+    private LoginData mLastLoginData = new LoginData("", "");
 
-    private MediatorLiveData<LoginState> mLoginState = new MediatorLiveData<>();
+    private MediatorLiveData<AuthState> mAuthState = new MediatorLiveData<>();
 
     public AuthViewModel(@NonNull Application application) {
         super(application);
-        mLoginState.setValue(LoginState.NONE);
+        mAuthState.setValue(AuthState.NONE);
     }
 
-    public LiveData<LoginState> getProgress() {
-        return mLoginState;
+    public LiveData<AuthState> getProgress() {
+        return mAuthState;
     }
 
     public void checkAuth() {
-        mLoginState.postValue(LoginState.IN_PROGRESS);
-        final LiveData<AuthRepo.AuthProgress> progressLiveData = AuthRepo.getInstance(getApplication()).checkAuth();
-        mLoginState.addSource(progressLiveData, authProgress -> {
-            if (authProgress == AuthRepo.AuthProgress.SUCCESS) {
-                mLoginState.postValue(LoginState.SUCCESS);
-                mLoginState.removeSource(progressLiveData);
-            } else if (authProgress == AuthRepo.AuthProgress.FAILED) {
-                mLoginState.postValue(LoginState.FAILED);
-                mLoginState.removeSource(progressLiveData);
+        mAuthState.postValue(AuthState.IN_PROGRESS);
+        final LiveData<AuthRepo.OpProgress> progressLiveData = AuthRepo.getInstance(getApplication()).checkAuth();
+        mAuthState.addSource(progressLiveData, authProgress -> {
+            if (authProgress == AuthRepo.OpProgress.SUCCESS) {
+                mAuthState.postValue(AuthState.SUCCESS);
+                mAuthState.removeSource(progressLiveData);
+            } else if (authProgress == AuthRepo.OpProgress.FAILED) {
+                mAuthState.postValue(AuthState.FAILED);
+                mAuthState.removeSource(progressLiveData);
+            }
+        });
+    }
+
+    public void login(String login, String password) {
+        LoginData last = mLastLoginData;
+        mLastLoginData = new LoginData(login, password);
+
+        if (!mLastLoginData.isValid()) {
+            mAuthState.postValue(AuthState.FAILED);
+        } else if (last != null && last.equals(mLastLoginData)) {
+            Log.d("LoginViewModel", "Ignoring duplicate request with login data");
+        } else if (mAuthState.getValue() != AuthState.IN_PROGRESS) {
+            requestLogin(mLastLoginData);
+        }
+    }
+
+    private void requestLogin(final LoginData registerData) {
+        mAuthState.postValue(AuthState.IN_PROGRESS);
+        final LiveData<AuthRepo.OpProgress> progressLiveData = AuthRepo
+                .getInstance(getApplication())
+                .login(
+                        registerData.getLogin(),
+                        registerData.getPassword()
+                );
+
+        mAuthState.addSource(progressLiveData, authProgress -> {
+            if (authProgress == AuthRepo.OpProgress.SUCCESS) {
+                mAuthState.postValue(AuthState.SUCCESS);
+                mAuthState.removeSource(progressLiveData);
+            } else if (authProgress == AuthRepo.OpProgress.FAILED) {
+                mAuthState.postValue(AuthState.FAILED);
+                mAuthState.removeSource(progressLiveData);
             }
         });
     }
 
     public void register(String login, String password) {
         RegisterData last = mLastRegisterData;
-        RegisterData registerData = new RegisterData(login, password);
-        mLastRegisterData = registerData;
+        mLastRegisterData = new RegisterData(login, password, "Elena", "Chernega");
 
-        if (!registerData.isValid()) {
-            mLoginState.postValue(LoginState.FAILED);
-        } else if (last != null && last.equals(registerData)) {
-            Log.w("LoginViewModel", "Ignoring duplicate request with login data");
-        } else if (mLoginState.getValue() != LoginState.IN_PROGRESS) {
-            requestRegister(registerData);
+        if (!mLastRegisterData.isValid()) {
+            mAuthState.postValue(AuthState.FAILED);
+        } else if (last != null && last.equals(mLastRegisterData)) {
+            Log.d("LoginViewModel", "Ignoring duplicate request with register data");
+        } else if (mAuthState.getValue() != AuthState.IN_PROGRESS) {
+            requestRegister(mLastRegisterData);
         }
     }
 
     private void requestRegister(final RegisterData registerData) {
-        mLoginState.postValue(LoginState.IN_PROGRESS);
-        final LiveData<AuthRepo.AuthProgress> progressLiveData = AuthRepo.getInstance(getApplication()).register(registerData.getLogin(), registerData.getPassword());
-        mLoginState.addSource(progressLiveData, authProgress -> {
-            if (authProgress == AuthRepo.AuthProgress.SUCCESS) {
-                mLoginState.postValue(LoginState.SUCCESS);
-                mLoginState.removeSource(progressLiveData);
-            } else if (authProgress == AuthRepo.AuthProgress.FAILED) {
-                mLoginState.postValue(LoginState.FAILED);
-                mLoginState.removeSource(progressLiveData);
+        mAuthState.postValue(AuthState.IN_PROGRESS);
+        final LiveData<AuthRepo.OpProgress> progressLiveData = AuthRepo
+                .getInstance(getApplication())
+                .register(
+                        registerData.getLogin(),
+                        registerData.getPassword(),
+                        registerData.getFirstName(),
+                        registerData.getLastName()
+                );
+
+        mAuthState.addSource(progressLiveData, authProgress -> {
+            if (authProgress == AuthRepo.OpProgress.SUCCESS) {
+                mAuthState.postValue(AuthState.SUCCESS);
+                mAuthState.removeSource(progressLiveData);
+            } else if (authProgress == AuthRepo.OpProgress.FAILED) {
+                mAuthState.postValue(AuthState.FAILED);
+                mAuthState.removeSource(progressLiveData);
             }
         });
     }
 
-    public enum LoginState {
+    public enum AuthState {
         NONE,
         IN_PROGRESS,
         SUCCESS,
         FAILED
     }
 
-    public static class RegisterData {
-        private final String mLogin;
-        private final String mPassword;
+    public static class LoginData {
+        protected String mLogin;
+        protected String mPassword;
 
-        public RegisterData(String login, String password) {
+        public LoginData(String login, String password) {
             mLogin = login;
             mPassword = password;
         }
@@ -102,7 +143,7 @@ public class AuthViewModel extends AndroidViewModel {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            RegisterData registerData = (RegisterData) o;
+            LoginData registerData = (LoginData) o;
             return Objects.equals(mLogin, registerData.mLogin) &&
                     Objects.equals(mPassword, registerData.mPassword);
         }
@@ -110,6 +151,50 @@ public class AuthViewModel extends AndroidViewModel {
         @Override
         public int hashCode() {
             return Objects.hash(mLogin, mPassword);
+        }
+    }
+
+    public static class RegisterData extends LoginData {
+        private String mFirstName;
+        private String mLastName;
+
+        public RegisterData(String login, String password, String firstName, String lastName) {
+            super(login, password);
+
+            mFirstName = firstName;
+            mLastName = lastName;
+        }
+
+        public String getFirstName() {
+            return mFirstName;
+        }
+
+        public String getLastName() {
+            return mLastName;
+        }
+
+        @Override
+        public boolean isValid() {
+            return super.isValid()
+                    && !TextUtils.isEmpty(mFirstName)
+                    && !TextUtils.isEmpty(mLastName);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!super.equals(o)) {
+                return false;
+            }
+
+            RegisterData registerData = (RegisterData) o;
+            return Objects.equals(mFirstName, registerData.mFirstName) &&
+                    Objects.equals(mLastName, registerData.mLastName);
+        }
+
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(mLogin, mPassword, mFirstName, mLastName);
         }
     }
 }
