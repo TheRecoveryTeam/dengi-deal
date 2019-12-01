@@ -14,6 +14,9 @@ public interface AuthDao {
     @Query("DELETE FROM auth")
     void reset();
 
-    @Query("SELECT * FROM auth")
-    List<AuthEntity> getUser();
+    @Query("SELECT * FROM auth LIMIT 1")
+    List<AuthEntity> getUsers();
+
+    @Query("SELECT token FROM auth LIMIT 1")
+    List<String> getTokens();
 }

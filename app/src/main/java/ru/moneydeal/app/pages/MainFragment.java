@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import ru.moneydeal.app.IActivity;
+import ru.moneydeal.app.IRouter;
 import ru.moneydeal.app.R;
 
 public class MainFragment extends Fragment {
@@ -33,7 +33,7 @@ public class MainFragment extends Fragment {
         mRegisterButton = view.findViewById(R.id.registerButton);
 
         mRegisterButton.setOnClickListener(v -> {
-            IActivity activity = (IActivity) getActivity();
+            IRouter activity = (IRouter) getActivity();
 
             if (activity == null) {
                 return;
@@ -47,7 +47,7 @@ public class MainFragment extends Fragment {
         mLoginButton = view.findViewById(R.id.signInButton);
 
         mLoginButton.setOnClickListener(v -> {
-            IActivity activity = (IActivity) getActivity();
+            IRouter activity = (IRouter) getActivity();
 
             if (activity == null) {
                 return;

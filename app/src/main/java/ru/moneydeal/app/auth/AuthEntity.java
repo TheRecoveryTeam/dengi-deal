@@ -11,10 +11,18 @@ public class AuthEntity {
     public String login;
 
     @NonNull
+    public String firstName;
+
+    @NonNull
+    public String lastName;
+
+    @NonNull
     public String token;
 
-    public AuthEntity(String login, String token) {
+    public AuthEntity(String login, String firstName, String lastName, String token) {
         this.login = login;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.token = token;
     }
 }

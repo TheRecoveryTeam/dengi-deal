@@ -1,25 +1,22 @@
 package ru.moneydeal.app.network;
 
-import android.content.Context;
-
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
-import ru.moneydeal.app.ApplicationModified;
 
 public class ApiRepo {
     private final UserApi mUserApi;
     private final OkHttpClient mOkHttpClient;
 
-    public ApiRepo() {
+    public ApiRepo(AuthorizationTokenInterceptor.ITokenRepo tokenRepo) {
         mOkHttpClient = new OkHttpClient()
                 .newBuilder()
+                .addInterceptor(new AuthorizationTokenInterceptor(tokenRepo))
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(MoshiConverterFactory.create())
-                .baseUrl("http://10.0.2.2:8080/")
+                .baseUrl("http://192.168.1.15:8080/api/")
                 .client(mOkHttpClient)
                 .build();
 
@@ -29,9 +26,4 @@ public class ApiRepo {
     public UserApi getUserApi() {
         return mUserApi;
     }
-
-    public static ApiRepo from(Context context) {
-        return ApplicationModified.from(context).getApis();
-    }
 }
-

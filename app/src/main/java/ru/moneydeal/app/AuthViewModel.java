@@ -13,13 +13,13 @@ import java.util.Objects;
 import ru.moneydeal.app.auth.AuthRepo;
 
 @SuppressWarnings("WeakerAccess")
-public class RegisterViewModel extends AndroidViewModel {
+public class AuthViewModel extends AndroidViewModel {
 
-    private LoginData mLastLoginData = new LoginData("", "");
+    private RegisterData mLastRegisterData = new RegisterData("", "");
 
     private MediatorLiveData<LoginState> mLoginState = new MediatorLiveData<>();
 
-    public RegisterViewModel(@NonNull Application application) {
+    public AuthViewModel(@NonNull Application application) {
         super(application);
         mLoginState.setValue(LoginState.NONE);
     }
@@ -28,23 +28,9 @@ public class RegisterViewModel extends AndroidViewModel {
         return mLoginState;
     }
 
-    public void login(String login, String password) {
-        LoginData last = mLastLoginData;
-        LoginData loginData = new LoginData(login, password);
-        mLastLoginData = loginData;
-
-        if (!loginData.isValid()) {
-            mLoginState.postValue(LoginState.ERROR);
-        } else if (last != null && last.equals(loginData)) {
-            Log.w("LoginViewModel", "Ignoring duplicate request with login data");
-        } else if (mLoginState.getValue() != LoginState.IN_PROGRESS) {
-            requestLogin(loginData);
-        }
-    }
-
-    private void requestLogin(final LoginData loginData) {
+    public void checkAuth() {
         mLoginState.postValue(LoginState.IN_PROGRESS);
-        final LiveData<AuthRepo.AuthProgress> progressLiveData = AuthRepo.getInstance(getApplication()).login(loginData.getLogin(), loginData.getPassword());
+        final LiveData<AuthRepo.AuthProgress> progressLiveData = AuthRepo.getInstance(getApplication()).checkAuth();
         mLoginState.addSource(progressLiveData, authProgress -> {
             if (authProgress == AuthRepo.AuthProgress.SUCCESS) {
                 mLoginState.postValue(LoginState.SUCCESS);
@@ -56,20 +42,46 @@ public class RegisterViewModel extends AndroidViewModel {
         });
     }
 
+    public void register(String login, String password) {
+        RegisterData last = mLastRegisterData;
+        RegisterData registerData = new RegisterData(login, password);
+        mLastRegisterData = registerData;
+
+        if (!registerData.isValid()) {
+            mLoginState.postValue(LoginState.FAILED);
+        } else if (last != null && last.equals(registerData)) {
+            Log.w("LoginViewModel", "Ignoring duplicate request with login data");
+        } else if (mLoginState.getValue() != LoginState.IN_PROGRESS) {
+            requestRegister(registerData);
+        }
+    }
+
+    private void requestRegister(final RegisterData registerData) {
+        mLoginState.postValue(LoginState.IN_PROGRESS);
+        final LiveData<AuthRepo.AuthProgress> progressLiveData = AuthRepo.getInstance(getApplication()).register(registerData.getLogin(), registerData.getPassword());
+        mLoginState.addSource(progressLiveData, authProgress -> {
+            if (authProgress == AuthRepo.AuthProgress.SUCCESS) {
+                mLoginState.postValue(LoginState.SUCCESS);
+                mLoginState.removeSource(progressLiveData);
+            } else if (authProgress == AuthRepo.AuthProgress.FAILED) {
+                mLoginState.postValue(LoginState.FAILED);
+                mLoginState.removeSource(progressLiveData);
+            }
+        });
+    }
 
     public enum LoginState {
         NONE,
-        ERROR,
         IN_PROGRESS,
         SUCCESS,
         FAILED
     }
 
-    public static class LoginData {
+    public static class RegisterData {
         private final String mLogin;
         private final String mPassword;
 
-        public LoginData(String login, String password) {
+        public RegisterData(String login, String password) {
             mLogin = login;
             mPassword = password;
         }
@@ -90,9 +102,9 @@ public class RegisterViewModel extends AndroidViewModel {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            LoginData loginData = (LoginData) o;
-            return Objects.equals(mLogin, loginData.mLogin) &&
-                    Objects.equals(mPassword, loginData.mPassword);
+            RegisterData registerData = (RegisterData) o;
+            return Objects.equals(mLogin, registerData.mLogin) &&
+                    Objects.equals(mPassword, registerData.mPassword);
         }
 
         @Override

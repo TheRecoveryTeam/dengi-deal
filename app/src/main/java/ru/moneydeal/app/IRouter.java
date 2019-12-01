@@ -1,6 +1,7 @@
 package ru.moneydeal.app;
 
-public interface IActivity {
+public interface IRouter {
+    void showSplash();
     void showRegister();
     void showHistory();
     void showLogin();

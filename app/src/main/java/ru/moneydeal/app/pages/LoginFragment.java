@@ -13,12 +13,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import ru.moneydeal.app.IActivity;
+import ru.moneydeal.app.IRouter;
 import ru.moneydeal.app.R;
-import ru.moneydeal.app.RegisterViewModel;
+import ru.moneydeal.app.AuthViewModel;
 
 public class LoginFragment extends Fragment {
-    private RegisterViewModel mLoginViewModel;
+    private AuthViewModel mAuthViewModel;
 
     @Nullable
     @Override
@@ -30,38 +30,32 @@ public class LoginFragment extends Fragment {
     @SuppressWarnings("ConstantConditions")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mLoginViewModel = new ViewModelProvider(getActivity()).get(RegisterViewModel.class);
+        mAuthViewModel = new ViewModelProvider(getActivity()).get(AuthViewModel.class);
 
         final Button loginButton = view.findViewById(R.id.loginInnerButton);
         final EditText loginInput = view.findViewById(R.id.loginInputLogin);
         final EditText passwordInput = view.findViewById(R.id.passwordInputLogin);
 
-        mLoginViewModel.getProgress().observe(getViewLifecycleOwner(), loginState -> {
-            if (loginState == RegisterViewModel.LoginState.FAILED) {
+        mAuthViewModel.getProgress().observe(getViewLifecycleOwner(), loginState -> {
+            if (loginState == AuthViewModel.LoginState.FAILED) {
                 int color = getResources().getColor(android.R.color.holo_red_dark);
 
                 loginInput.setTextColor(color);
                 passwordInput.setTextColor(color);
-            } else if (loginState == RegisterViewModel.LoginState.ERROR) {
-                int color = getResources().getColor(android.R.color.holo_orange_light);
-
-                loginInput.setTextColor(color);
-                passwordInput.setTextColor(color);
-            } else if (loginState == RegisterViewModel.LoginState.SUCCESS) {
+            } else if (loginState == AuthViewModel.LoginState.SUCCESS) {
                 Toast.makeText(getContext(), "Success login", Toast.LENGTH_LONG).show();
                 switchToHistory();
             }
         });
 
 
-        loginButton.setOnClickListener(v -> mLoginViewModel.login(
+        loginButton.setOnClickListener(v -> mAuthViewModel.register(
                 loginInput.getText().toString(),
                 passwordInput.getText().toString()));
     }
 
     private void switchToHistory() {
-        IActivity activity = (IActivity) getActivity();
+        IRouter activity = (IRouter) getActivity();
 
         if (activity == null) {
             return;

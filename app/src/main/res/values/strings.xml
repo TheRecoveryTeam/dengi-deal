@@ -7,4 +7,5 @@
     <string name="registerButtonText">Register</string>
     <string name="loginText">Your login</string>
     <string name="passwordText">Your password</string>
+    <string name="loading">Загрузка</string>
 </resources>
