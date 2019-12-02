@@ -24,9 +24,9 @@ public class GroupViewModel extends AndroidViewModel {
 
     public void fetchGroups() {
         final LiveData<GroupRepo.GroupData> progressLiveData = GroupRepo.getInstance(getApplication()).fetchGroups();
+        Log.d("GroupViewModel", "fetchGroups");
         mGroupState.addSource(progressLiveData, groups -> {
             mGroupState.postValue(groups);
-            Log.d("group view model", "groups: " + groups);
             mGroupState.removeSource(progressLiveData);
         });
     }

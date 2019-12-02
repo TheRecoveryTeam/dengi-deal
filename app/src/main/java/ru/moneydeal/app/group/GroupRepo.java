@@ -12,13 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.moneydeal.app.ApplicationModified;
-import ru.moneydeal.app.auth.AuthDao;
-import ru.moneydeal.app.auth.AuthRepo;
 import ru.moneydeal.app.network.ApiRepo;
 import ru.moneydeal.app.network.ErrorResponse;
 import ru.moneydeal.app.network.GroupApi;
 import ru.moneydeal.app.network.ResponseCallback;
-import ru.moneydeal.app.network.UserApi;
 
 public class GroupRepo {
     private final ApiRepo mApiRepo;
@@ -35,15 +32,12 @@ public class GroupRepo {
 
     @NonNull
     public static GroupRepo getInstance(Context context) {
-        if (ApplicationModified.from(context).getGroupRepo() == null) {
-            Log.d("GroupRepo", "get null instance");
-        } else {
-            Log.d("GroupRepo", "non nul instance");
-        }
         return ApplicationModified.from(context).getGroupRepo();
     }
 
     public LiveData<GroupData> fetchGroups() {
+        Log.d("GroupRepo", "fetch groups");
+
         AsyncTask.execute(() -> {
             GroupApi api = mApiRepo.getGroupApi();
             api.fetchGroups().enqueue(new GroupResponseCallback());
@@ -52,18 +46,21 @@ public class GroupRepo {
         return mGroupData;
     }
 
-
     private void saveGroups(GroupApi.GroupData data) {
         AsyncTask.execute(() -> {
             List<GroupEntity> groupsEntities = new ArrayList<>();
             List<Group> groups = new ArrayList<>();
-            Log.d("save groups", "start");
+            Log.d(
+                    "GroupRepo",
+                    "start groups saving, count: " + data.groups.size()
+            );
+
             for (GroupApi.Group group: data.groups) {
                 groupsEntities.add(new GroupEntity(
                         group.name,
                         group.description
                 ));
-                Log.d("save groups", group.name);
+                Log.d("GroupRepo", "save group with name " + group.name);
                 groups.add(new Group(
                         group.name,
                         group.description
@@ -72,11 +69,13 @@ public class GroupRepo {
 
             Log.d(
                     "AuthRepo",
-                    "saved groups data");
+                    "saved groups data"
+            );
+
+            mGroupData.postValue(new GroupData(groups));
 
             try {
                 mGroupDao.insert(groupsEntities);
-                mGroupData.postValue(new GroupData(groups));
             } catch (Exception e) {
                 Log.d("GroupRepo", "failed" + e.getMessage());
             }
@@ -113,12 +112,13 @@ public class GroupRepo {
     public class GroupResponseCallback extends ResponseCallback<GroupApi.GroupsResponse> {
         @Override
         public void onOk(GroupApi.GroupsResponse response) {
+            Log.d("GroupRepo", "fetch ok");
             saveGroups(response.data);
         }
 
         @Override
         public void onError(ErrorResponse response) {
-            Log.d("mGroupRepo", "fetch failed " + response.data.message);
+            Log.d("GroupRepo", "fetch error " + response.data.message);
         }
     }
 }

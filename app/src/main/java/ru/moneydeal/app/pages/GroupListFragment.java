@@ -18,7 +18,7 @@ import ru.moneydeal.app.GroupViewModel;
 import ru.moneydeal.app.R;
 import ru.moneydeal.app.group.GroupRepo;
 
-public class HistoryFragment extends Fragment {
+public class GroupListFragment extends Fragment {
     private GroupViewModel mGroupViewModel;
     private RecyclerView mRecyclerView;
     private MyDataAdapter mDataAdapter;
@@ -30,15 +30,11 @@ public class HistoryFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.history_fragment, container, false);
 
-        this.bindRecyclerView(view);
-        return view;
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mGroupViewModel = new ViewModelProvider(getActivity()).get(GroupViewModel.class);
         mGroupViewModel.fetchGroups();
+
+        this.bindRecyclerView(view);
+        return view;
     }
 
     private void bindRecyclerView(View view) {
@@ -56,18 +52,23 @@ public class HistoryFragment extends Fragment {
         GroupViewModel mGroupViewModel;
 
         public MyDataAdapter(GroupViewModel viewModel) {
+            if (viewModel == null) {
+                return;
+            }
+
             mGroupViewModel = viewModel;
+            Log.d("GroupList Adater", "subscribe on update");
+            mGroupViewModel.getGroups().observe(getViewLifecycleOwner(), groupData -> {
+                Log.d("GroupList Adapter", "got new data " + groupData.groups.size());
+                mData = groupData;
+                this.notifyDataSetChanged();
+            });
         }
 
         @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            Log.d("GroupList", "onCreateViewHolder " + viewType);
-
-            mGroupViewModel.getGroups().observe(getViewLifecycleOwner(), groupData -> {
-                mData = groupData;
-                this.notifyDataSetChanged();
-            });
+            Log.d("GroupList", "onCreateViewHolder");
 
             View view = LayoutInflater
                     .from(parent.getContext())

@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
-import ru.moneydeal.app.pages.HistoryFragment;
+import ru.moneydeal.app.pages.GroupListFragment;
 import ru.moneydeal.app.pages.LoginFragment;
 import ru.moneydeal.app.pages.RegisterFragment;
 import ru.moneydeal.app.pages.SplashFragment;
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements IRouter {
     @Override
     public void showHistory() {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new HistoryFragment())
+                .replace(R.id.fragment_container, new GroupListFragment())
                 .commit();
     }
 
