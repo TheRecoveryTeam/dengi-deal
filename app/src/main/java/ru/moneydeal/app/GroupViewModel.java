@@ -14,7 +14,6 @@ import ru.moneydeal.app.group.GroupRepo;
 public class GroupViewModel extends AndroidViewModel {
     private MediatorLiveData<GroupRepo.GroupData> mGroupState = new MediatorLiveData<>();
 
-
     public GroupViewModel(@NonNull Application application) {
         super(application);
     }

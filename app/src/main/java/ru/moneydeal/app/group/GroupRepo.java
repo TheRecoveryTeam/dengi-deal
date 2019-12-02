@@ -35,13 +35,16 @@ public class GroupRepo {
 
     @NonNull
     public static GroupRepo getInstance(Context context) {
+        if (ApplicationModified.from(context).getGroupRepo() == null) {
+            Log.d("GroupRepo", "get null instance");
+        } else {
+            Log.d("GroupRepo", "non nul instance");
+        }
         return ApplicationModified.from(context).getGroupRepo();
     }
 
     public LiveData<GroupData> fetchGroups() {
         AsyncTask.execute(() -> {
-//            List<GroupEntity> groups = mGroupDao.getGroups();
-
             GroupApi api = mApiRepo.getGroupApi();
             api.fetchGroups().enqueue(new GroupResponseCallback());
         });
@@ -54,14 +57,16 @@ public class GroupRepo {
         AsyncTask.execute(() -> {
             List<GroupEntity> groupsEntities = new ArrayList<>();
             List<Group> groups = new ArrayList<>();
-            for (int i = 0; i < data.groups.size(); ++i) {
-                groupsEntities.set(i, new GroupEntity(
-                        data.groups.get(i).name,
-                        data.groups.get(i).description
+            Log.d("save groups", "start");
+            for (GroupApi.Group group: data.groups) {
+                groupsEntities.add(new GroupEntity(
+                        group.name,
+                        group.description
                 ));
-                groups.set(i, new Group(
-                        data.groups.get(i).name,
-                        data.groups.get(i).description
+                Log.d("save groups", group.name);
+                groups.add(new Group(
+                        group.name,
+                        group.description
                 ));
             }
 
@@ -98,6 +103,10 @@ public class GroupRepo {
 
         public GroupData(List<Group> groups) {
             this.groups = groups;
+        }
+
+        public int getSize() {
+            return groups == null ? 0 : groups.size();
         }
     }
 

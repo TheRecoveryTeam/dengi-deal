@@ -29,7 +29,6 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.history_fragment, container, false);
-        mGroupViewModel.fetchGroups();
 
         this.bindRecyclerView(view);
         return view;
@@ -39,6 +38,7 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mGroupViewModel = new ViewModelProvider(getActivity()).get(GroupViewModel.class);
+        mGroupViewModel.fetchGroups();
     }
 
     private void bindRecyclerView(View view) {
@@ -66,8 +66,8 @@ public class HistoryFragment extends Fragment {
 
             mGroupViewModel.getGroups().observe(getViewLifecycleOwner(), groupData -> {
                 mData = groupData;
+                this.notifyDataSetChanged();
             });
-
 
             View view = LayoutInflater
                     .from(parent.getContext())
@@ -86,7 +86,7 @@ public class HistoryFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return mData.groups.size();
+            return mData == null ?  0 : mData.getSize();
         }
     }
 
@@ -98,7 +98,6 @@ public class HistoryFragment extends Fragment {
             super(itemView);
 
             mNameView = itemView.findViewById(R.id.group_item_name);
-
             mDescriptionView = itemView.findViewById(R.id.group_item_description);
         }
     }
