@@ -8,4 +8,6 @@
     <string name="passwordText">Your password</string>
     <string name="loading">Loading</string>
     <string name="login">Login</string>
+    <string name="group_name">Group name</string>
+    <string name="group_description">Group description</string>
 </resources>

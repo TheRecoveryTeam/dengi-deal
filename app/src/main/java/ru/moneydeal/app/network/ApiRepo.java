@@ -7,6 +7,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class ApiRepo {
     private final UserApi mUserApi;
+    private final GroupApi mGroupApi;
     private final OkHttpClient mOkHttpClient;
 
     public ApiRepo(AuthorizationTokenInterceptor.ITokenRepo tokenRepo) {
@@ -20,14 +21,19 @@ public class ApiRepo {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(MoshiConverterFactory.create())
-                .baseUrl("http://192.168.1.15:8080/api/")
+                .baseUrl("http://10.0.2.2:8080/api/")
                 .client(mOkHttpClient)
                 .build();
 
         mUserApi = retrofit.create(UserApi.class);
+        mGroupApi = retrofit.create(GroupApi.class);
     }
 
     public UserApi getUserApi() {
         return mUserApi;
+    }
+
+    public GroupApi getGroupApi() {
+        return mGroupApi;
     }
 }
