@@ -1,7 +1,6 @@
 package ru.moneydeal.app.pages;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ru.moneydeal.app.GroupViewModel;
+import ru.moneydeal.app.IRouter;
+import ru.moneydeal.app.MainActivity;
 import ru.moneydeal.app.R;
 import ru.moneydeal.app.group.GroupEntity;
 
@@ -35,7 +37,7 @@ public class GroupListFragment extends Fragment {
         mGroupViewModel = new ViewModelProvider(getActivity()).get(GroupViewModel.class);
         mGroupViewModel.fetchGroups();
 
-        this.bindRecyclerView(view);
+        bindRecyclerView(view);
         return view;
     }
 
@@ -59,7 +61,6 @@ public class GroupListFragment extends Fragment {
             }
 
             mGroupViewModel = viewModel;
-            Log.d("GroupList Adater", "subscribe on update");
             mGroupViewModel.getGroups().observe(getViewLifecycleOwner(), groupData -> {
                 mData = groupData;
                 this.notifyDataSetChanged();
@@ -69,8 +70,6 @@ public class GroupListFragment extends Fragment {
         @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            Log.d("GroupList", "onCreateViewHolder");
-
             View view = LayoutInflater
                     .from(parent.getContext())
                     .inflate(R.layout.group_list_item, parent, false);
@@ -101,6 +100,24 @@ public class GroupListFragment extends Fragment {
 
             mNameView = itemView.findViewById(R.id.group_item_name);
             mDescriptionView = itemView.findViewById(R.id.group_item_description);
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position > mDataAdapter.mData.size()) {
+                    return;
+                }
+
+                GroupEntity entity = mDataAdapter.mData.get(position);
+                if (entity == null) {
+                    return;
+                }
+
+                IRouter activity = (IRouter) getActivity();
+                if (activity == null) {
+                    return;
+                }
+
+                activity.showFragmentGroup(entity.id);
+            });
         }
     }
 }

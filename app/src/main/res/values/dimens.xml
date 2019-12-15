@@ -4,4 +4,6 @@
     <dimen name="inputHeight">40dp</dimen>
     <dimen name="phoneInputWidth">250dp</dimen>
     <dimen name="spacingS">10dp</dimen>
+    <dimen name="fontSizeH1">32sp</dimen>
+    <dimen name="fontSizeM">18sp</dimen>
 </resources>

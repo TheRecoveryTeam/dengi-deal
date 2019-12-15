@@ -1,9 +1,11 @@
 package ru.moneydeal.app;
 
+import androidx.annotation.NonNull;
+
 public interface IRouter {
     void showSplash();
     void showRegister();
     void showHistory();
     void showLogin();
-    void showFragmentGroup();
+    void showFragmentGroup(@NonNull String groupId);
 }

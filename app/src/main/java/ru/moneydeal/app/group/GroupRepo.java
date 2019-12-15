@@ -23,7 +23,6 @@ public class GroupRepo {
 
     private MutableLiveData<List<GroupEntity>> mGroupData;
 
-
     public GroupRepo(ApplicationModified context) {
         mApiRepo = context.getApis();
         mGroupDao = context.getDB().getGroupDao();
@@ -63,6 +62,7 @@ public class GroupRepo {
 
             for (GroupApi.Group group: data.groups) {
                 groupsEntities.add(new GroupEntity(
+                        group._id,
                         group.name,
                         group.description
                 ));
@@ -83,6 +83,21 @@ public class GroupRepo {
                 Log.d("GroupRepo", "failed" + e.getMessage());
             }
         });
+    }
+
+    public MutableLiveData<GroupEntity> getGroup(String groupId) {
+        MutableLiveData<GroupEntity> liveData = new MutableLiveData<>();
+
+        AsyncTask.execute(() -> {
+            List<GroupEntity> list = mGroupDao.getGroup(groupId);
+            if (list.size() == 0) {
+                liveData.postValue(null);
+            } else {
+                liveData.postValue(list.get(0));
+            }
+        });
+
+        return liveData;
     }
 
     public class GroupResponseCallback extends ResponseCallback<GroupApi.GroupsResponse> {

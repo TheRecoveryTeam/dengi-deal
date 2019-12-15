@@ -65,9 +65,13 @@ public class MainActivity extends AppCompatActivity implements IRouter {
     }
 
     @Override
-    public void showFragmentGroup() {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new GroupFragment())
+    public void showFragmentGroup(String groupId) {
+        GroupFragment instance = GroupFragment.getInstance(groupId);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, instance)
+                .addToBackStack(null)
                 .commit();
     }
 }

@@ -10,6 +10,9 @@ import retrofit2.http.GET;
 public interface GroupApi {
     public static class Group {
         @NonNull
+        public String _id;
+
+        @NonNull
         public String name;
 
         @NonNull

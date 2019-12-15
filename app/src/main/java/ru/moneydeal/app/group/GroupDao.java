@@ -16,4 +16,7 @@ public interface GroupDao {
 
     @Query("SELECT * FROM `group`")
     List<GroupEntity> getGroups();
+
+    @Query("SELECT * FROM `group` WHERE id = :id")
+    List<GroupEntity> getGroup(String id);
 }

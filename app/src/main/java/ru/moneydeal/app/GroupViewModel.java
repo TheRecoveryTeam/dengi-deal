@@ -16,6 +16,7 @@ import ru.moneydeal.app.group.GroupRepo;
 
 public class GroupViewModel extends AndroidViewModel {
     private MediatorLiveData<List<GroupEntity>> mGroupState = new MediatorLiveData<>();
+    private MediatorLiveData<GroupEntity> mGroup = new MediatorLiveData<>();
 
     public GroupViewModel(@NonNull Application application) {
         super(application);
@@ -25,11 +26,23 @@ public class GroupViewModel extends AndroidViewModel {
         return mGroupState;
     }
 
+    public LiveData<GroupEntity> getGroup() {
+        return mGroup;
+    }
+
     public void fetchGroups() {
         final LiveData<List<GroupEntity>> progressLiveData = GroupRepo.getInstance(getApplication()).fetchGroups();
-        Log.d("GroupViewModel", "fetchGroups");
         mGroupState.addSource(progressLiveData, groups -> {
             mGroupState.postValue(groups);
+            mGroupState.removeSource(progressLiveData);
+        });
+    }
+
+    public void selectGroup(String groupId) {
+        LiveData<GroupEntity> group = GroupRepo.getInstance(getApplication()).getGroup(groupId);
+        mGroup.addSource(group, item -> {
+            mGroup.postValue(item);
+            mGroup.removeSource(group);
         });
     }
 }

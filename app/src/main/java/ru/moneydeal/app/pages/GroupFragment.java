@@ -15,9 +15,18 @@ import ru.moneydeal.app.GroupViewModel;
 import ru.moneydeal.app.R;
 
 public class GroupFragment extends Fragment {
+    private static String GROUP_ID = "GROUP_ID";
     private GroupViewModel mGroupViewModel;
     private TextView mName;
     private TextView mDescription;
+
+    public static GroupFragment getInstance(String groupId) {
+        Bundle bundle = new Bundle();
+        bundle.putString(GROUP_ID, groupId);
+        GroupFragment fragment = new GroupFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -40,6 +49,20 @@ public class GroupFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle == null) {
+            return;
+        }
+
+        mGroupViewModel.getGroup().observe(getViewLifecycleOwner(), group -> {
+            if (group == null) {
+                return;
+            }
+
+            mName.setText(group.name);
+            mDescription.setText(group.description);
+        });
+
+        mGroupViewModel.selectGroup(bundle.getString(GROUP_ID));
     }
 }
