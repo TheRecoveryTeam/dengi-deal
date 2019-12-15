@@ -26,7 +26,6 @@ public class AuthorizationTokenInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         String token = mTokenRepo.getToken();
-        Log.d("Interceptor", "token " + token);
 
         Request request = chain.request();
 

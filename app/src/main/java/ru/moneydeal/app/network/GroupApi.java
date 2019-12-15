@@ -24,6 +24,7 @@ public interface GroupApi {
 
     public static class GroupData {
         public List<Group> groups;
+        public List<UserApi.User> users;
     }
 
     public static class GroupsResponse extends BaseResponse {

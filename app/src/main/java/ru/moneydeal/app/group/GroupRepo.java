@@ -16,15 +16,18 @@ import ru.moneydeal.app.network.ApiRepo;
 import ru.moneydeal.app.network.ErrorResponse;
 import ru.moneydeal.app.network.GroupApi;
 import ru.moneydeal.app.network.ResponseCallback;
+import ru.moneydeal.app.userList.UsersRepo;
 
 public class GroupRepo {
     private final ApiRepo mApiRepo;
+    private final UsersRepo mUsersRepo;
     private final GroupDao mGroupDao;
 
     private MutableLiveData<List<GroupEntity>> mGroupData;
 
     public GroupRepo(ApplicationModified context) {
         mApiRepo = context.getApis();
+        mUsersRepo = context.getUsersRepo();
         mGroupDao = context.getDB().getGroupDao();
         mGroupData = new MutableLiveData<>();
 
@@ -32,7 +35,6 @@ public class GroupRepo {
     }
 
     private void loadGroupDataFromDB() {
-        Log.d("GroupRepo", "fetch groups from db");
         AsyncTask.execute(() -> mGroupData.postValue(mGroupDao.getGroups()));
     }
 
@@ -42,8 +44,6 @@ public class GroupRepo {
     }
 
     public LiveData<List<GroupEntity>> fetchGroups() {
-        Log.d("GroupRepo", "fetch groups");
-
         AsyncTask.execute(() -> {
             GroupApi api = mApiRepo.getGroupApi();
             api.fetchGroups().enqueue(new GroupResponseCallback());
@@ -68,6 +68,8 @@ public class GroupRepo {
                     }
                 }
 
+                mUsersRepo.addUsers(data.users);
+
                 mGroupDao.reset();
                 mGroupDao.insert(groupsEntities);
                 mGroupDao.insetGroupUsers(groupUserEntities);
@@ -78,7 +80,7 @@ public class GroupRepo {
         });
     }
 
-    public MutableLiveData<GroupEntity> getGroup(String groupId) {
+    public LiveData<GroupEntity> getGroup(String groupId) {
         MutableLiveData<GroupEntity> liveData = new MutableLiveData<>();
 
         AsyncTask.execute(() -> {
@@ -88,6 +90,17 @@ public class GroupRepo {
             } else {
                 liveData.postValue(list.get(0));
             }
+        });
+
+        return liveData;
+    }
+
+    public LiveData<List<String>> getGroupUserIds(String groupId) {
+        MutableLiveData<List<String>> liveData = new MutableLiveData<>();
+
+        AsyncTask.execute(() -> {
+            List<String> ids = mGroupDao.selectGroupUsers(groupId);
+            liveData.postValue(ids);
         });
 
         return liveData;

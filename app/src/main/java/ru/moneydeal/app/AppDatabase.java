@@ -11,13 +11,22 @@ import ru.moneydeal.app.group.GroupDao;
 import ru.moneydeal.app.auth.AuthEntity;
 import ru.moneydeal.app.group.GroupEntity;
 import ru.moneydeal.app.group.GroupUserEntity;
+import ru.moneydeal.app.userList.UserDao;
+import ru.moneydeal.app.userList.UserEntity;
 
-@Database(entities = {AuthEntity.class, GroupEntity.class, GroupUserEntity.class}, version = 2, exportSchema = false)
+@Database(entities = {
+        AuthEntity.class,
+        GroupEntity.class,
+        GroupUserEntity.class,
+        UserEntity.class
+}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract AuthDao getAuthDao();
 
     public abstract GroupDao getGroupDao();
+
+    public abstract UserDao getUserDao();
 
     private static AppDatabase instance;
 

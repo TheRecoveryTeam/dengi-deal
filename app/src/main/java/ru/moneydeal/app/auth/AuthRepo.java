@@ -45,7 +45,6 @@ public class AuthRepo {
 
             if (users.size() == 0) {
                 mAuthProgress.postValue(OpProgress.FAILED);
-                Log.d("AuthRepo", "has no user");
                 return;
             }
 
@@ -72,7 +71,6 @@ public class AuthRepo {
             @NonNull String login,
             @NonNull String password
     ) {
-        Log.d("AuthRepo", "login");
         mAuthProgress.setValue(OpProgress.IN_PROGRESS);
         UserApi api = mApiRepo.getUserApi();
         api.login(login, password).enqueue(new AuthResponseCallback());
@@ -93,16 +91,6 @@ public class AuthRepo {
                     data.user.first_name,
                     data.user.last_name,
                     token
-            );
-
-            Log.d(
-                    "AuthRepo",
-                    "save user data:\n"
-                    + data.user._id + "\n"
-                    + data.user.first_name + "\n"
-                    + data.user.last_name + "\n"
-                    + data.user.login + "\n"
-                    + token
             );
 
             try {
@@ -129,7 +117,6 @@ public class AuthRepo {
 
         @Override
         public void onError(ErrorResponse response) {
-            Log.d("AuthRepo", "register failed " + response.data.message);
             mAuthProgress.postValue(OpProgress.FAILED);
         }
     }

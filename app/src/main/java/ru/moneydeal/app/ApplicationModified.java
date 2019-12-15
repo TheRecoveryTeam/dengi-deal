@@ -7,10 +7,12 @@ import ru.moneydeal.app.auth.AuthRepo;
 import ru.moneydeal.app.auth.TokenRepo;
 import ru.moneydeal.app.group.GroupRepo;
 import ru.moneydeal.app.network.ApiRepo;
+import ru.moneydeal.app.userList.UsersRepo;
 
 public class ApplicationModified extends Application {
 
     private TokenRepo mTokenRepo;
+    private UsersRepo mUsersRepo;
     private ApiRepo mApiRepo;
     private AuthRepo mAuthRepo;
     private AppDatabase mDatabase;
@@ -20,6 +22,7 @@ public class ApplicationModified extends Application {
     public void onCreate() {
         super.onCreate();
         mDatabase = AppDatabase.getInstance(this);
+        mUsersRepo = new UsersRepo(this);
         mTokenRepo = new TokenRepo(this);
         mApiRepo = new ApiRepo(mTokenRepo);
         mAuthRepo = new AuthRepo(this);
@@ -34,6 +37,10 @@ public class ApplicationModified extends Application {
 
     public GroupRepo getGroupRepo() {
         return mGroupRepo;
+    }
+
+    public UsersRepo getUsersRepo() {
+        return mUsersRepo;
     }
 
     public ApiRepo getApis() {

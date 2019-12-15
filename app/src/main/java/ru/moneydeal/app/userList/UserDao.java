@@ -10,7 +10,7 @@ import java.util.List;
 @Dao
 public interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(UserEntity... entities);
+    void insert(List<UserEntity> entities);
 
     @Query("DELETE FROM users")
     void reset();

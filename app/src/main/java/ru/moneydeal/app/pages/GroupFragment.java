@@ -1,6 +1,7 @@
 package ru.moneydeal.app.pages;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import ru.moneydeal.app.GroupViewModel;
 import ru.moneydeal.app.R;
+import ru.moneydeal.app.userList.UserEntity;
 
 public class GroupFragment extends Fragment {
     private static String GROUP_ID = "GROUP_ID";
@@ -63,6 +65,13 @@ public class GroupFragment extends Fragment {
             mDescription.setText(group.description);
         });
 
-        mGroupViewModel.selectGroup(bundle.getString(GROUP_ID));
+        String groupId = bundle.getString(GROUP_ID);
+        mGroupViewModel.selectGroup(groupId);
+
+        mGroupViewModel.getGroupUsers(groupId).observe(getViewLifecycleOwner(), users -> {
+            for(UserEntity userEntity: users) {
+                Log.d("@ GroupFragment", userEntity.login);
+            }
+        });
     }
 }
