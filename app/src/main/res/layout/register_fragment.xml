@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/appNameTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/appName"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:textSize="40sp"
+        />
+
+    <TextView
+        android:id="@+id/loginLabel"
+        android:layout_width="@dimen/phoneInputWidth"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/appNameTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/spacingM"
+        android:text="@string/loginInputText"
+        android:labelFor="@id/loginLabel"
+        />
+
+    <EditText
+        android:id="@+id/loginInput"
+        android:layout_width="@dimen/phoneInputWidth"
+        android:layout_height="@dimen/inputHeight"
+        android:layout_below="@id/loginLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/spacingS"
+        android:gravity="center_horizontal"
+        android:inputType="text"
+        android:hint="@string/loginText"
+        />
+
+    <TextView
+        android:id="@+id/passwordLabel"
+        android:layout_width="@dimen/phoneInputWidth"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loginInput"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/spacingM"
+        android:text="@string/passwordInputText"
+        android:labelFor="@id/passwordLabel"
+        />
+
+    <EditText
+        android:id="@+id/passwordInput"
+        android:layout_width="@dimen/phoneInputWidth"
+        android:layout_height="@dimen/inputHeight"
+        android:layout_below="@id/passwordLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/spacingS"
+        android:gravity="center_horizontal"
+        android:inputType="textPassword"
+        android:hint="@string/passwordInputText"
+        />
+
+    <Button
+        android:id="@+id/registerInnerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/passwordInput"
+        android:layout_marginTop="@dimen/spacingM"
+        android:background="@color/colorAccent"
+        android:paddingLeft="@dimen/spacingM"
+        android:paddingRight="@dimen/spacingM"
+        android:text="@string/registerButtonText"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/goToLoginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/registerInnerButton"
+        android:layout_marginTop="@dimen/spacingM"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="@dimen/spacingM"
+        android:paddingRight="@dimen/spacingM"
+        android:text="@string/login"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        />
+</RelativeLayout>
