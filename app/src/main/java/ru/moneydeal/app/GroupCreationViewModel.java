@@ -20,10 +20,15 @@ public class GroupCreationViewModel extends AndroidViewModel {
     private MediatorLiveData<GroupCreationState> mGroupCreationState = new MediatorLiveData<>();
 
 
+    public void reset() {
+        mGroupCreationState.setValue(GroupCreationState.NONE);
+    }
+
     public GroupCreationViewModel(@NonNull Application application) {
         super(application);
         mGroupCreationState.setValue(GroupCreationState.NONE);
     }
+
 
     public void createGroup(String name, String description) {
         GroupCreationData last = mGroupCreationData;
