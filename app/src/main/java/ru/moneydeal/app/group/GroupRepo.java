@@ -55,29 +55,22 @@ public class GroupRepo {
     private void saveGroups(GroupApi.GroupData data) {
         AsyncTask.execute(() -> {
             List<GroupEntity> groupsEntities = new ArrayList<>();
-            Log.d(
-                    "GroupRepo",
-                    "start groups saving, count: " + data.groups.size()
-            );
-
-            for (GroupApi.Group group: data.groups) {
-                groupsEntities.add(new GroupEntity(
-                        group._id,
-                        group.name,
-                        group.description
-                ));
-                Log.d("GroupRepo", "save group with name " + group.name);
-            }
-
-            Log.d(
-                    "AuthRepo",
-                    "saved groups data"
-            );
-
+            List<GroupUserEntity> groupUserEntities = new ArrayList<>();
 
             try {
+                for (GroupApi.Group group: data.groups) {
+                    GroupEntity gEntity = new GroupEntity(group._id, group.name, group.description);
+                    groupsEntities.add(gEntity);
+
+                    for (String userId: group.users_ids) {
+                        GroupUserEntity uEntity = new GroupUserEntity(group._id, userId);
+                        groupUserEntities.add(uEntity);
+                    }
+                }
+
                 mGroupDao.reset();
                 mGroupDao.insert(groupsEntities);
+                mGroupDao.insetGroupUsers(groupUserEntities);
                 mGroupData.postValue(groupsEntities);
             } catch (Exception e) {
                 Log.d("GroupRepo", "failed" + e.getMessage());

@@ -10,8 +10,9 @@ import ru.moneydeal.app.auth.AuthDao;
 import ru.moneydeal.app.group.GroupDao;
 import ru.moneydeal.app.auth.AuthEntity;
 import ru.moneydeal.app.group.GroupEntity;
+import ru.moneydeal.app.group.GroupUserEntity;
 
-@Database(entities = {AuthEntity.class, GroupEntity.class}, version = 2, exportSchema = false)
+@Database(entities = {AuthEntity.class, GroupEntity.class, GroupUserEntity.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract AuthDao getAuthDao();

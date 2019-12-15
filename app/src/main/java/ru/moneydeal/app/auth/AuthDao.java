@@ -9,7 +9,7 @@ import java.util.List;
 @Dao
 public interface AuthDao {
     @Insert
-    void insert(AuthEntity... entity);
+    void insert(AuthEntity... entities);
 
     @Query("DELETE FROM auth")
     void reset();

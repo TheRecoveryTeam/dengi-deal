@@ -17,6 +17,9 @@ public interface GroupApi {
 
         @NonNull
         public String description;
+
+        @NonNull
+        public List<String> users_ids;
     }
 
     public static class GroupData {

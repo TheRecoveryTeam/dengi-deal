@@ -16,6 +16,9 @@ public interface UserApi {
 
     public static class User {
         @NonNull
+        public String _id;
+
+        @NonNull
         public String login;
 
         @NonNull

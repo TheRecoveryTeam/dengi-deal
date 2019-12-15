@@ -24,4 +24,11 @@
         android:text="@string/group_description"
         />
 
+    <LinearLayout
+        android:id="@+id/user_list_container"
+        android:layout_marginTop="@dimen/spacingS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        />
 </LinearLayout>

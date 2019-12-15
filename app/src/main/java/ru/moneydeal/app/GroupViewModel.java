@@ -32,10 +32,11 @@ public class GroupViewModel extends AndroidViewModel {
 
     public void fetchGroups() {
         final LiveData<List<GroupEntity>> progressLiveData = GroupRepo.getInstance(getApplication()).fetchGroups();
-        mGroupState.addSource(progressLiveData, groups -> {
-            mGroupState.postValue(groups);
-            mGroupState.removeSource(progressLiveData);
-        });
+        if (!progressLiveData.hasObservers()) {
+            mGroupState.addSource(progressLiveData, groups -> {
+                mGroupState.postValue(groups);
+            });
+        }
     }
 
     public void selectGroup(String groupId) {

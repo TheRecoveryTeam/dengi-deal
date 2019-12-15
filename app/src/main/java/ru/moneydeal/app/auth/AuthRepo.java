@@ -88,6 +88,7 @@ public class AuthRepo {
 
             mAuthDao.reset();
             AuthEntity authEntity = new AuthEntity(
+                    data.user._id,
                     data.user.login,
                     data.user.first_name,
                     data.user.last_name,
@@ -97,6 +98,7 @@ public class AuthRepo {
             Log.d(
                     "AuthRepo",
                     "save user data:\n"
+                    + data.user._id + "\n"
                     + data.user.first_name + "\n"
                     + data.user.last_name + "\n"
                     + data.user.login + "\n"
