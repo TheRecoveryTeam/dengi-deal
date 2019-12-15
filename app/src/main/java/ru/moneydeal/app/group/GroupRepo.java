@@ -21,13 +21,20 @@ public class GroupRepo {
     private final ApiRepo mApiRepo;
     private final GroupDao mGroupDao;
 
-    private MutableLiveData<GroupData> mGroupData;
+    private MutableLiveData<List<GroupEntity>> mGroupData;
 
 
     public GroupRepo(ApplicationModified context) {
         mApiRepo = context.getApis();
         mGroupDao = context.getDB().getGroupDao();
         mGroupData = new MutableLiveData<>();
+
+        loadGroupDataFromDB();
+    }
+
+    private void loadGroupDataFromDB() {
+        Log.d("GroupRepo", "fetch groups from db");
+        AsyncTask.execute(() -> mGroupData.postValue(mGroupDao.getGroups()));
     }
 
     @NonNull
@@ -35,7 +42,7 @@ public class GroupRepo {
         return ApplicationModified.from(context).getGroupRepo();
     }
 
-    public LiveData<GroupData> fetchGroups() {
+    public LiveData<List<GroupEntity>> fetchGroups() {
         Log.d("GroupRepo", "fetch groups");
 
         AsyncTask.execute(() -> {
@@ -49,7 +56,6 @@ public class GroupRepo {
     private void saveGroups(GroupApi.GroupData data) {
         AsyncTask.execute(() -> {
             List<GroupEntity> groupsEntities = new ArrayList<>();
-            List<Group> groups = new ArrayList<>();
             Log.d(
                     "GroupRepo",
                     "start groups saving, count: " + data.groups.size()
@@ -61,10 +67,6 @@ public class GroupRepo {
                         group.description
                 ));
                 Log.d("GroupRepo", "save group with name " + group.name);
-                groups.add(new Group(
-                        group.name,
-                        group.description
-                ));
             }
 
             Log.d(
@@ -72,41 +74,15 @@ public class GroupRepo {
                     "saved groups data"
             );
 
-            mGroupData.postValue(new GroupData(groups));
 
             try {
+                mGroupDao.reset();
                 mGroupDao.insert(groupsEntities);
+                mGroupData.postValue(groupsEntities);
             } catch (Exception e) {
                 Log.d("GroupRepo", "failed" + e.getMessage());
             }
         });
-    }
-
-
-
-    public static class Group {
-        @NonNull
-        public String name;
-
-        @NonNull
-        public String description;
-
-        public Group(String name, String description) {
-            this.name = name;
-            this.description = description;
-        }
-    }
-
-    public static class GroupData {
-        public List<Group> groups;
-
-        public GroupData(List<Group> groups) {
-            this.groups = groups;
-        }
-
-        public int getSize() {
-            return groups == null ? 0 : groups.size();
-        }
     }
 
     public class GroupResponseCallback extends ResponseCallback<GroupApi.GroupsResponse> {

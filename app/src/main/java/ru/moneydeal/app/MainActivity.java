@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
+import ru.moneydeal.app.pages.GroupFragment;
 import ru.moneydeal.app.pages.GroupListFragment;
 import ru.moneydeal.app.pages.LoginFragment;
 import ru.moneydeal.app.pages.RegisterFragment;
@@ -60,6 +61,13 @@ public class MainActivity extends AppCompatActivity implements IRouter {
     public void showLogin() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new LoginFragment())
+                .commit();
+    }
+
+    @Override
+    public void showFragmentGroup() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new GroupFragment())
                 .commit();
     }
 }

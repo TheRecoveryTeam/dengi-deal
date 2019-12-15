@@ -14,9 +14,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import ru.moneydeal.app.GroupViewModel;
 import ru.moneydeal.app.R;
-import ru.moneydeal.app.group.GroupRepo;
+import ru.moneydeal.app.group.GroupEntity;
 
 public class GroupListFragment extends Fragment {
     private GroupViewModel mGroupViewModel;
@@ -28,7 +30,7 @@ public class GroupListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.history_fragment, container, false);
+        View view = inflater.inflate(R.layout.group_list_fragment, container, false);
 
         mGroupViewModel = new ViewModelProvider(getActivity()).get(GroupViewModel.class);
         mGroupViewModel.fetchGroups();
@@ -48,7 +50,7 @@ public class GroupListFragment extends Fragment {
     }
 
     class MyDataAdapter extends RecyclerView.Adapter<MyViewHolder> {
-        GroupRepo.GroupData mData;
+        List<GroupEntity> mData;
         GroupViewModel mGroupViewModel;
 
         public MyDataAdapter(GroupViewModel viewModel) {
@@ -59,7 +61,6 @@ public class GroupListFragment extends Fragment {
             mGroupViewModel = viewModel;
             Log.d("GroupList Adater", "subscribe on update");
             mGroupViewModel.getGroups().observe(getViewLifecycleOwner(), groupData -> {
-                Log.d("GroupList Adapter", "got new data " + groupData.groups.size());
                 mData = groupData;
                 this.notifyDataSetChanged();
             });
@@ -72,14 +73,14 @@ public class GroupListFragment extends Fragment {
 
             View view = LayoutInflater
                     .from(parent.getContext())
-                    .inflate(R.layout.history_item, parent, false);
+                    .inflate(R.layout.group_list_item, parent, false);
 
             return new MyViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-            GroupRepo.Group data = mData.groups.get(position);
+            GroupEntity data = mData.get(position);
 
             holder.mNameView.setText(data.name);
             holder.mDescriptionView.setText(data.description);
@@ -87,7 +88,7 @@ public class GroupListFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return mData == null ?  0 : mData.getSize();
+            return mData == null ?  0 : mData.size();
         }
     }
 
