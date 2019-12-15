@@ -8,4 +8,5 @@ public interface IRouter {
     void showHistory();
     void showLogin();
     void showFragmentGroup(@NonNull String groupId);
+    void showGroupCreation();
 }

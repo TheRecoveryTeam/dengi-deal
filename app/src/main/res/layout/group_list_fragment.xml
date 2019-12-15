@@ -23,7 +23,23 @@
         android:layout_gravity="center_horizontal"
         android:layout_below="@id/history_title"
         android:orientation="horizontal"
+        android:paddingBottom="40dp"
         />
 
+    <RelativeLayout
+        android:background="@android:color/transparent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="bottom">
+
+        <Button
+            android:id="@+id/group_create_button"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_group_button_text" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

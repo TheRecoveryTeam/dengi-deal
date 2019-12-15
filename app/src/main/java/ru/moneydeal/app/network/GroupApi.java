@@ -5,7 +5,10 @@ import androidx.annotation.NonNull;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 public interface GroupApi {
     public static class Group {
@@ -30,6 +33,17 @@ public interface GroupApi {
         public GroupData data;
     }
 
+    public static class GroupCreationResponse extends BaseResponse {
+        public Group data;
+    }
+
     @GET("group/list")
     Call<GroupsResponse> fetchGroups();
+
+    @FormUrlEncoded
+    @POST("group/create")
+    Call<GroupCreationResponse> createGroup(
+            @Field("name") String name,
+            @Field("description") String description
+    );
 }

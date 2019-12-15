@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,7 @@ public class GroupListFragment extends Fragment {
     private GroupViewModel mGroupViewModel;
     private RecyclerView mRecyclerView;
     private MyDataAdapter mDataAdapter;
+    private Button mButton;
 
 
     @Nullable
@@ -41,6 +43,14 @@ public class GroupListFragment extends Fragment {
         return view;
     }
 
+    private void switchToCreation() {
+        IRouter activity = (IRouter) getActivity();
+
+        if (activity != null) {
+            activity.showGroupCreation();
+        }
+    }
+
     private void bindRecyclerView(View view) {
         mRecyclerView = view.findViewById(R.id.history_list);
 
@@ -49,6 +59,11 @@ public class GroupListFragment extends Fragment {
         mDataAdapter = new MyDataAdapter(mGroupViewModel);
 
         mRecyclerView.setAdapter(mDataAdapter);
+
+        mButton = view.findViewById(R.id.group_create_button);
+        mButton.setOnClickListener(v -> {
+            switchToCreation();
+        });
     }
 
     class MyDataAdapter extends RecyclerView.Adapter<MyViewHolder> {

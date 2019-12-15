@@ -10,4 +10,11 @@
     <string name="login">Login</string>
     <string name="group_name">Group name</string>
     <string name="group_description">Group description</string>
+    <string name="add_group_button_text">Add group</string>
+    <string name="group_creation_name_label_text">Name</string>
+    <string name="group_creation_description_label_text">Description</string>
+    <string name="creationGroupName">Group name</string>
+    <string name="creationGroupDescription">Group description</string>
+    <string name="creationGroupButton">Create</string>
+
 </resources>
