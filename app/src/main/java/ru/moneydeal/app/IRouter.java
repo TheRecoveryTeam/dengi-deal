@@ -5,4 +5,5 @@ public interface IRouter {
     void showRegister();
     void showHistory();
     void showLogin();
+    void showFragmentGroup();
 }
