@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.moneydeal.app.ApplicationModified;
+import ru.moneydeal.app.auth.AuthEntity;
+import ru.moneydeal.app.auth.AuthRepo;
 import ru.moneydeal.app.network.ApiRepo;
 import ru.moneydeal.app.network.ErrorResponse;
 import ru.moneydeal.app.network.GroupApi;
@@ -24,12 +26,14 @@ public class GroupRepo {
     private final GroupDao mGroupDao;
 
     private MutableLiveData<List<GroupEntity>> mGroupData;
+    private MutableLiveData<CreationProgress> mCreationProgress;
 
     public GroupRepo(ApplicationModified context) {
         mApiRepo = context.getApis();
         mUsersRepo = context.getUsersRepo();
         mGroupDao = context.getDB().getGroupDao();
         mGroupData = new MutableLiveData<>();
+        mCreationProgress = new MutableLiveData<>();
 
         loadGroupDataFromDB();
     }
@@ -106,6 +110,22 @@ public class GroupRepo {
         return liveData;
     }
 
+    public MutableLiveData<CreationProgress> createGroup(
+            @NonNull String name,
+            @NonNull String description) {
+        mCreationProgress.setValue(CreationProgress.IN_PROGRESS);
+
+        GroupApi api = mApiRepo.getGroupApi();
+        api.createGroup(name, description).enqueue(new GroupCreationResponseCallback());
+        return mCreationProgress;
+    }
+
+    public enum CreationProgress {
+        IN_PROGRESS,
+        SUCCESS,
+        FAILED
+    }
+
     public class GroupResponseCallback extends ResponseCallback<GroupApi.GroupsResponse> {
         @Override
         public void onOk(GroupApi.GroupsResponse response) {
@@ -115,6 +135,21 @@ public class GroupRepo {
 
         @Override
         public void onError(ErrorResponse response) {
+            Log.d("GroupRepo", "fetch error " + response.data.message);
+        }
+    }
+
+    public class GroupCreationResponseCallback extends ResponseCallback<GroupApi.GroupCreationResponse> {
+        @Override
+        public void onOk(GroupApi.GroupCreationResponse response) {
+            mCreationProgress.setValue(CreationProgress.SUCCESS);
+
+            Log.d("GroupRepo", "fetch ok " + response.data.name);
+        }
+
+        @Override
+        public void onError(ErrorResponse response) {
+            mCreationProgress.setValue(CreationProgress.FAILED);
             Log.d("GroupRepo", "fetch error " + response.data.message);
         }
     }

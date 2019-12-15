@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
+import ru.moneydeal.app.pages.GroupCreationFragment;
 import ru.moneydeal.app.pages.GroupFragment;
 import ru.moneydeal.app.pages.GroupListFragment;
 import ru.moneydeal.app.pages.LoginFragment;
@@ -72,6 +73,14 @@ public class MainActivity extends AppCompatActivity implements IRouter {
                 .beginTransaction()
                 .replace(R.id.fragment_container, instance)
                 .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void showGroupCreation() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new GroupCreationFragment())
                 .commit();
     }
 }

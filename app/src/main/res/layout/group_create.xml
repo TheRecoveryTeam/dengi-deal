@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/groupCreationNameLabel"
+        android:layout_width="@dimen/phoneInputWidth"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/spacingM"
+        android:text="@string/group_creation_name_label_text"
+        android:labelFor="@id/groupCreationNameLabel"
+        />
+
+    <EditText
+        android:id="@+id/groupCreationNameInput"
+        android:layout_width="@dimen/phoneInputWidth"
+        android:layout_height="@dimen/inputHeight"
+        android:layout_below="@id/groupCreationNameLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/spacingS"
+        android:gravity="center_horizontal"
+        android:inputType="text"
+        android:hint="@string/creationGroupName"
+        />
+
+    <TextView
+        android:id="@+id/groupCreationDescriptionLabel"
+        android:layout_width="@dimen/phoneInputWidth"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/groupCreationNameInput"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/spacingM"
+        android:text="@string/group_creation_description_label_text"
+        android:labelFor="@id/groupCreationDescriptionLabel"
+        />
+
+    <EditText
+        android:id="@+id/groupCreationDescriptionInput"
+        android:layout_width="@dimen/phoneInputWidth"
+        android:layout_height="@dimen/inputHeight"
+        android:layout_below="@id/groupCreationDescriptionLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/spacingS"
+        android:gravity="center_horizontal"
+        android:inputType="text"
+        android:hint="@string/creationGroupDescription"
+        />
+
+
+    <Button
+        android:id="@+id/creationGroupButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/groupCreationDescriptionInput"
+        android:layout_marginTop="@dimen/spacingM"
+        android:background="@color/colorAccent"
+        android:paddingLeft="@dimen/spacingM"
+        android:paddingRight="@dimen/spacingM"
+        android:text="@string/creationGroupButton"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white" />
+
+</RelativeLayout>
