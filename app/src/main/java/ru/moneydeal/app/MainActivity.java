@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
+import ru.moneydeal.app.pages.CheckCreateFragment;
 import ru.moneydeal.app.pages.CheckFragment;
 import ru.moneydeal.app.pages.GroupCreationFragment;
 import ru.moneydeal.app.pages.GroupFragment;
@@ -37,13 +38,6 @@ public class MainActivity extends AppCompatActivity implements IRouter {
 
         transaction.addToBackStack(null);
         transaction.commit();
-    }
-
-    @Override
-    public void showSplash() {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new SplashFragment())
-                .commit();
     }
 
     @Override
@@ -90,6 +84,17 @@ public class MainActivity extends AppCompatActivity implements IRouter {
     @Override
     public void showCheck(@NonNull String checkId) {
         CheckFragment instance = CheckFragment.getInstance(checkId);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, instance)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void showCheckCreate(@NonNull String groupId) {
+        CheckCreateFragment instance = CheckCreateFragment.getInstance(groupId);
 
         getSupportFragmentManager()
                 .beginTransaction()

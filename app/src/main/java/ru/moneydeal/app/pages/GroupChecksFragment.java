@@ -58,6 +58,14 @@ public class GroupChecksFragment extends Fragment {
         }
 
         bindRecyclerView(view);
+        view.findViewById(R.id.group_checks_add_btn).setOnClickListener(v -> {
+            IRouter activity = (IRouter) getActivity();
+            if (activity == null) {
+                return;
+            }
+
+            activity.showCheckCreate(mGroupId);
+        });
 
         return view;
     }

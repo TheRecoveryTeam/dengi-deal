@@ -26,5 +26,6 @@
     <string name="check_description">Check description</string>
     <string name="amount_string">%1$d ₽</string>
     <string name="check_chunks_title_text">Amount chunks</string>
+    <string name="add_new_check">Add new check</string>
 
 </resources>
