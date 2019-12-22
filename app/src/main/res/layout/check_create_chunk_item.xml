@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacingS">
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/check_create_chunk_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/fontSizeM"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
+            android:text="@string/user_unknown"
+            />
+        <TextView
+            android:id="@+id/check_create_chunk_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/fontSizeS"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
+            android:text="@string/user_unknown"
+            />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/check_create_chunk_amount"
+        android:layout_weight="0"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:hint="@string/amount"
+        android:layout_gravity="center_vertical"
+        />
+
+    <TextView
+        android:layout_weight="0"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/spacingM"
+        android:textColor="@color/black"
+        android:text="@string/ruble_sign"
+        />
+</LinearLayout>

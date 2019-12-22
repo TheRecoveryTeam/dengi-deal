@@ -39,5 +39,6 @@
     <string name="split_for_equal_chunks">Split for equal chunks</string>
     <string name="split_for_unequal_chunks">Split for unequal chunks</string>
     <string name="save">Save</string>
+    <string name="ruble_sign">₽</string>
 
 </resources>

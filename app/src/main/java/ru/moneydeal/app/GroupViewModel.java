@@ -41,7 +41,7 @@ public class GroupViewModel extends AndroidViewModel {
         return mGroup;
     }
 
-    public void getGroupUsers(String groupId) {
+    public void fetchGroupUsers(String groupId) {
         final LiveData<List<String>> groupUserIds
                 = GroupRepo.getInstance(getApplication()).getGroupUserIds(groupId);
 
@@ -57,7 +57,7 @@ public class GroupViewModel extends AndroidViewModel {
         });
     }
 
-    public MediatorLiveData<List<UserEntity>> getUsersGroup() {
+    public MediatorLiveData<List<UserEntity>> getGroupUsers() {
         return mGroupUsersResult;
     }
 

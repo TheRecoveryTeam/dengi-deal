@@ -79,8 +79,8 @@ public class GroupUsersFragment extends Fragment {
             return;
         }
 
-        mGroupViewModel.getGroupUsers(mGroupId);
-        mGroupViewModel.getUsersGroup().observe(getViewLifecycleOwner(), users -> {
+        mGroupViewModel.fetchGroupUsers(mGroupId);
+        mGroupViewModel.getGroupUsers().observe(getViewLifecycleOwner(), users -> {
             for(UserEntity userEntity: users) {
                 Log.d("@ GroupFragment", userEntity.login);
             }
@@ -97,7 +97,7 @@ public class GroupUsersFragment extends Fragment {
             }
 
             mGroupViewModel = viewModel;
-            mGroupViewModel.getUsersGroup().observe(getViewLifecycleOwner(), usersData -> {
+            mGroupViewModel.getGroupUsers().observe(getViewLifecycleOwner(), usersData -> {
                 mData = usersData;
                 this.notifyDataSetChanged();
             });

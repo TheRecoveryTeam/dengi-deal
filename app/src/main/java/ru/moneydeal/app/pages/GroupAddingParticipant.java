@@ -1,7 +1,6 @@
 package ru.moneydeal.app.pages;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +90,7 @@ public class GroupAddingParticipant extends Fragment {
                     mParticipantButton.setVisibility(View.INVISIBLE);
                     mLogin.setVisibility(View.INVISIBLE);
                     mLoginInput.setText("");
-                    mGroupViewModel.getGroupUsers(mGroupId);
+                    mGroupViewModel.fetchGroupUsers(mGroupId);
                 }
             });
         });
