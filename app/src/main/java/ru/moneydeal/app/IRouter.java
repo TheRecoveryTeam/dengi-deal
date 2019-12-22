@@ -9,4 +9,5 @@ public interface IRouter {
     void showLogin();
     void showFragmentGroup(@NonNull String groupId);
     void showGroupCreation();
+    void showCheck(@NonNull String checkId);
 }

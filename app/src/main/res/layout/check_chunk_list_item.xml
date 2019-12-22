@@ -11,7 +11,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/group_check_name"
+            android:id="@+id/check_chunk_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/check_name"
@@ -19,7 +19,7 @@
             android:textColor="@color/colorAccent" />
 
         <TextView
-            android:id="@+id/group_check_description"
+            android:id="@+id/check_chunk_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/spacingS"
@@ -29,7 +29,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/group_check_amount"
+        android:id="@+id/check_chunk_amount"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="0"
@@ -41,6 +41,5 @@
         android:singleLine="true"
         android:text="@string/amount_string"
         android:textSize="@dimen/fontSizeH2"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold" />
+        android:textColor="@color/colorPrimary" />
 </LinearLayout>
