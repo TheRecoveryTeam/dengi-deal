@@ -121,6 +121,7 @@ public class GroupRepo {
     }
 
     public enum CreationProgress {
+        NONE,
         IN_PROGRESS,
         SUCCESS,
         FAILED
@@ -143,7 +144,6 @@ public class GroupRepo {
         @Override
         public void onOk(GroupApi.GroupCreationResponse response) {
             mCreationProgress.setValue(CreationProgress.SUCCESS);
-
             Log.d("GroupRepo", "fetch ok " + response.data.name);
         }
 

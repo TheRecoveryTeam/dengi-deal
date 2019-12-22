@@ -31,6 +31,7 @@ public class GroupCreationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mGroupCreationModel = new ViewModelProvider(getActivity()).get(GroupCreationViewModel.class);
+        mGroupCreationModel.reset();
 
         final Button createButton = view.findViewById(R.id.creationGroupButton);
         final EditText nameInput = view.findViewById(R.id.groupCreationNameInput);
