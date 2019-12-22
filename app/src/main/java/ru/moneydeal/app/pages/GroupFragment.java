@@ -1,7 +1,6 @@
 package ru.moneydeal.app.pages;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +13,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import ru.moneydeal.app.GroupViewModel;
 import ru.moneydeal.app.R;
-import ru.moneydeal.app.userList.UserEntity;
 
 public class GroupFragment extends Fragment {
     private static String GROUP_ID = "GROUP_ID";
     private GroupViewModel mGroupViewModel;
     private TextView mName;
     private TextView mDescription;
+    private String mGroupId;
 
     public static GroupFragment getInstance(String groupId) {
         Bundle bundle = new Bundle();
@@ -39,24 +38,34 @@ public class GroupFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.group_fragment, container, false);
 
+        Bundle bundle = getArguments();
+        if (bundle == null) {
+            return view;
+        }
+
+        mGroupId = bundle.getString(GROUP_ID);
+
+
         bindViews(view);
+        createUsersList();
 
         return view;
     }
-
 
     private void bindViews(View view) {
         mName = view.findViewById(R.id.group_item_name);
         mDescription = view.findViewById(R.id.group_item_description);
     }
 
+    private void createUsersList() {
+        GroupUsersFragment groupUsers = GroupUsersFragment.getInstance(mGroupId);
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.group_users_container, groupUsers)
+                .commit();
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Bundle bundle = getArguments();
-        if (bundle == null) {
-            return;
-        }
-
         mGroupViewModel.getGroup().observe(getViewLifecycleOwner(), group -> {
             if (group == null) {
                 return;
@@ -66,13 +75,9 @@ public class GroupFragment extends Fragment {
             mDescription.setText(group.description);
         });
 
-        String groupId = bundle.getString(GROUP_ID);
-        mGroupViewModel.selectGroup(groupId);
-
-        mGroupViewModel.getGroupUsers(groupId).observe(getViewLifecycleOwner(), users -> {
-            for(UserEntity userEntity: users) {
-                Log.d("@ GroupFragment", userEntity.login);
-            }
-        });
+        if (mGroupId == null) {
+            return;
+        }
+        mGroupViewModel.selectGroup(mGroupId);
     }
 }

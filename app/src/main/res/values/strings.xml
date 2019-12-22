@@ -16,5 +16,8 @@
     <string name="creationGroupName">Group name</string>
     <string name="creationGroupDescription">Group description</string>
     <string name="creationGroupButton">Create</string>
+    <string name="group_users_title_text">Group mates</string>
+    <string name="user_full_name">%1$s %2$s</string>
+    <string name="group_user_login">User Login</string>
 
 </resources>

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,7 +36,6 @@ public class GroupListFragment extends Fragment {
         View view = inflater.inflate(R.layout.group_list_fragment, container, false);
 
         mGroupViewModel = new ViewModelProvider(getActivity()).get(GroupViewModel.class);
-        Log.d("@", "onCreateView");
         mGroupViewModel.fetchGroups();
 
         bindRecyclerView(view);

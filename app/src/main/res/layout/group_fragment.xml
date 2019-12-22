@@ -22,11 +22,12 @@
         android:textColor="@color/black"
         android:textSize="@dimen/fontSizeM"
         android:text="@string/group_description"
+        android:layout_marginBottom="@dimen/spacingS"
         />
 
+
     <LinearLayout
-        android:id="@+id/user_list_container"
-        android:layout_marginTop="@dimen/spacingS"
+        android:id="@+id/group_users_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
