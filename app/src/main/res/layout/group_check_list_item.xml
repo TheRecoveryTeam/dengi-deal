@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/group_check_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacingS"
+            android:text="@string/check_name"
+            android:textSize="@dimen/fontSizeM"
+            android:textColor="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/group_check_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/spacingS"
+            android:text="@string/check_description"
+            android:textSize="@dimen/fontSizeM"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/group_check_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/spacingS"
+
+        android:ellipsize="none"
+        android:minWidth="100dp"
+        android:singleLine="true"
+        android:text="@string/amount_string"
+        android:textSize="@dimen/fontSizeH2"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold" />
+</LinearLayout>

@@ -42,6 +42,7 @@ public abstract class ResponseCallback<R extends BaseResponse> implements Callba
 
     @Override
     public final void onFailure(Call<R> call, Throwable t) {
+        Log.d("ResponseCallback", "Retrofit Exception -> " + ((t != null && t.getMessage() != null) ? t.getMessage() : "---"));
         createEmptyError();
     }
 

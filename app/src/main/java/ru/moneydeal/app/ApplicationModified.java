@@ -5,6 +5,7 @@ import android.content.Context;
 
 import ru.moneydeal.app.auth.AuthRepo;
 import ru.moneydeal.app.auth.TokenRepo;
+import ru.moneydeal.app.checks.CheckRepo;
 import ru.moneydeal.app.group.GroupRepo;
 import ru.moneydeal.app.network.ApiRepo;
 import ru.moneydeal.app.userList.UsersRepo;
@@ -17,6 +18,7 @@ public class ApplicationModified extends Application {
     private AuthRepo mAuthRepo;
     private AppDatabase mDatabase;
     private GroupRepo mGroupRepo;
+    private CheckRepo mCheckRepo;
 
     @Override
     public void onCreate() {
@@ -27,6 +29,7 @@ public class ApplicationModified extends Application {
         mApiRepo = new ApiRepo(mTokenRepo);
         mAuthRepo = new AuthRepo(this);
         mGroupRepo = new GroupRepo(this);
+        mCheckRepo = new CheckRepo(this);
     }
 
     public TokenRepo getTokenRepo() { return mTokenRepo; }
@@ -41,6 +44,10 @@ public class ApplicationModified extends Application {
 
     public UsersRepo getUsersRepo() {
         return mUsersRepo;
+    }
+
+    public CheckRepo getCheckRepo() {
+        return mCheckRepo;
     }
 
     public ApiRepo getApis() {

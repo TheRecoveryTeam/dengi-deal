@@ -53,10 +53,10 @@ public class LoginFragment extends Fragment {
                 loginInput.getText().toString(),
                 passwordInput.getText().toString()));
 
-        goToRegisterButton.setOnClickListener(v -> switchToRegitster());
+        goToRegisterButton.setOnClickListener(v -> switchToRegister());
     }
 
-    private void switchToRegitster() {
+    private void switchToRegister() {
         IRouter activity = (IRouter) getActivity();
 
         if (activity == null) {

@@ -8,6 +8,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 public class ApiRepo {
     private final UserApi mUserApi;
     private final GroupApi mGroupApi;
+    private final CheckApi mCheckApi;
     private final OkHttpClient mOkHttpClient;
 
     public ApiRepo(AuthorizationTokenInterceptor.ITokenRepo tokenRepo) {
@@ -27,6 +28,7 @@ public class ApiRepo {
 
         mUserApi = retrofit.create(UserApi.class);
         mGroupApi = retrofit.create(GroupApi.class);
+        mCheckApi = retrofit.create(CheckApi.class);
     }
 
     public UserApi getUserApi() {
@@ -35,5 +37,9 @@ public class ApiRepo {
 
     public GroupApi getGroupApi() {
         return mGroupApi;
+    }
+
+    public CheckApi getCheckApi() {
+        return mCheckApi;
     }
 }

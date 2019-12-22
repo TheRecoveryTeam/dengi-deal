@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.moneydeal.app.ApplicationModified;
-import ru.moneydeal.app.auth.AuthEntity;
-import ru.moneydeal.app.auth.AuthRepo;
 import ru.moneydeal.app.network.ApiRepo;
 import ru.moneydeal.app.network.ErrorResponse;
 import ru.moneydeal.app.network.GroupApi;

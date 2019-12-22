@@ -9,8 +9,11 @@ import java.util.List;
 
 @Dao
 public interface GroupDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(List<GroupEntity> entities);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insetGroupUsers(List<GroupUserEntity> entities);
 
     @Query("DELETE FROM `group`")
     void reset();
@@ -20,9 +23,6 @@ public interface GroupDao {
 
     @Query("SELECT * FROM `group` WHERE id = :id LIMIT 1")
     List<GroupEntity> getGroup(String id);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insetGroupUsers(List<GroupUserEntity> entities);
 
     @Query("SELECT userId FROM group_users WHERE groupId = :groupId")
     List<String> selectGroupUsers(String groupId);

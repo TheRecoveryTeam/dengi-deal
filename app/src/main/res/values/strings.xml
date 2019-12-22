@@ -19,5 +19,9 @@
     <string name="group_users_title_text">Group mates</string>
     <string name="user_full_name">%1$s %2$s</string>
     <string name="group_user_login">User Login</string>
+    <string name="checks_title">Checks</string>
+    <string name="check_name">Check Name</string>
+    <string name="check_description">Check description</string>
+    <string name="amount_string">%1$d ₽</string>
 
 </resources>

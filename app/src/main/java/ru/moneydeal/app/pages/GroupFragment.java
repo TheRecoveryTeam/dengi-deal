@@ -45,9 +45,9 @@ public class GroupFragment extends Fragment {
 
         mGroupId = bundle.getString(GROUP_ID);
 
-
         bindViews(view);
         createUsersList();
+        createChecksList();
 
         return view;
     }
@@ -61,6 +61,13 @@ public class GroupFragment extends Fragment {
         GroupUsersFragment groupUsers = GroupUsersFragment.getInstance(mGroupId);
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.group_users_container, groupUsers)
+                .commit();
+    }
+
+    private void createChecksList() {
+        GroupChecksFragment groupUsers = GroupChecksFragment.getInstance(mGroupId);
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.group_checks_container, groupUsers)
                 .commit();
     }
 

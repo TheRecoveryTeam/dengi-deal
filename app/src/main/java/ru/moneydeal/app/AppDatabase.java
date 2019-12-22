@@ -7,6 +7,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import ru.moneydeal.app.auth.AuthDao;
+import ru.moneydeal.app.checks.CheckChunkEntity;
+import ru.moneydeal.app.checks.CheckEntity;
 import ru.moneydeal.app.group.GroupDao;
 import ru.moneydeal.app.auth.AuthEntity;
 import ru.moneydeal.app.group.GroupEntity;
@@ -18,8 +20,8 @@ import ru.moneydeal.app.userList.UserEntity;
         AuthEntity.class,
         GroupEntity.class,
         GroupUserEntity.class,
-        UserEntity.class
-}, version = 2, exportSchema = false)
+        UserEntity.class,
+}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract AuthDao getAuthDao();

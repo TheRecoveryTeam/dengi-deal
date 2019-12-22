@@ -23,7 +23,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_below="@id/history_title"
         android:orientation="horizontal"
-        android:paddingBottom="40dp"
+        android:padding="@dimen/spacingS"
         />
 
     <RelativeLayout

@@ -3,23 +3,24 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="20dp">
+    >
 
     <TextView
+        android:textSize="@dimen/fontSizeM"
         android:id="@+id/group_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorAccent"
-        android:padding="5dp"
+        android:paddingBottom="@dimen/spacingS"
         android:text="@string/user_full_name"
         />
 
     <TextView
         android:id="@+id/group_user_login"
         android:textColor="@color/black"
-        android:padding="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/fontSizeS"
         android:text="@string/group_user_login"
         />
 </LinearLayout>
