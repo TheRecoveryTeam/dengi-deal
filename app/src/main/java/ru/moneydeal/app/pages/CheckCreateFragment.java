@@ -16,11 +16,18 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.moneydeal.app.CheckViewModel;
 import ru.moneydeal.app.GroupViewModel;
+import ru.moneydeal.app.IRouter;
 import ru.moneydeal.app.R;
+import ru.moneydeal.app.checks.BaseCheckEntity;
+import ru.moneydeal.app.checks.CheckChunkEntity;
+import ru.moneydeal.app.checks.CheckEntity;
+import ru.moneydeal.app.checks.CheckRepo;
+import ru.moneydeal.app.network.CheckApi;
 import ru.moneydeal.app.userList.UserEntity;
 
 public class CheckCreateFragment extends Fragment {
@@ -84,7 +91,50 @@ public class CheckCreateFragment extends Fragment {
         });
         mGroupViewModel.fetchGroupUsers(mGroupId);
 
+        EditText nameInput = view.findViewById(R.id.check_create_name_input);
+        EditText descriptionInput = view.findViewById(R.id.check_create_description_input);
+        EditText amountInput = view.findViewById(R.id.check_create_amount_input);
+        Button saveButton = view.findViewById(R.id.check_create_save_btn);
+
+        View.OnClickListener saveClickListener = v -> {
+            if (mGroupUsers == null || mGroupUsers.size() == 0) {
+                return;
+            }
+
+            if (mIsUnequalChunksMode) {
+                return;
+            }
+
+            String amountValue = amountInput.getText().toString();
+            Integer amountPerChunk = Integer.parseInt(amountValue) / mGroupUsers.size();
+
+            ArrayList<CheckChunkEntity> chunks = new ArrayList<>();
+            for (UserEntity user : mGroupUsers) {
+                chunks.add(new CheckChunkEntity(null, user.id, amountPerChunk));
+            }
+
+            mCheckViewModel.createCheck(new BaseCheckEntity(
+                    nameInput.getText().toString(),
+                    descriptionInput.getText().toString(),
+                    mGroupId,
+                    chunks
+            )).observe(getViewLifecycleOwner(), progress -> {
+                if (progress == CheckRepo.Progress.SUCCESS) {
+                    handleCheckCreated();
+                }
+            });
+        };
+        saveButton.setOnClickListener(saveClickListener);
+
         return view;
+    }
+
+    void handleCheckCreated() {
+        IRouter activity = (IRouter) getActivity();
+
+        if (activity != null) {
+            activity.back();
+        }
     }
 
     void restoreIsUnequalChunksMode(@Nullable Bundle savedInstanceState) {

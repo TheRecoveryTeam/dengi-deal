@@ -13,6 +13,7 @@ import java.util.List;
 
 import ru.moneydeal.app.ApplicationModified;
 import ru.moneydeal.app.network.ApiRepo;
+import ru.moneydeal.app.network.BaseResponse;
 import ru.moneydeal.app.network.CheckApi;
 import ru.moneydeal.app.network.ErrorResponse;
 import ru.moneydeal.app.network.ResponseCallback;
@@ -52,6 +53,36 @@ public class CheckRepo {
         }
 
         return null;
+    }
+
+    public LiveData<Progress> createCheck(BaseCheckEntity check) {
+        MutableLiveData<Progress> liveData = new MutableLiveData<>();
+        liveData.setValue(Progress.IN_PROGRESS);
+
+        if (check == null) {
+            liveData.setValue(Progress.FAILED);
+            return liveData;
+        }
+
+        ArrayList<CheckApi.CheckChunk> chunks = new ArrayList<>();
+        for (CheckChunkEntity chunk : check.chunks) {
+            chunks.add(new CheckApi.CheckChunk(
+                chunk.userId,
+                chunk.amount
+            ));
+        }
+
+        AsyncTask.execute(() -> mApiRepo
+                .getCheckApi()
+                .createCheck(new CheckApi.CreateCheckBody(
+                        check.name,
+                        check.description,
+                        check.groupId,
+                        chunks
+                ))
+                .enqueue(new CheckCreateResponseCallback(liveData)));
+
+        return liveData;
     }
 
     private void processFetchChecks(MutableLiveData<GroupChecks> liveData, String groupId) {
@@ -133,6 +164,24 @@ public class CheckRepo {
             Log.d("CheckRepo", "fetch error " + response.data.message);
             mLoadedChecks = new GroupChecks(Progress.FAILED, new ArrayList<>());
             mLiveData.postValue(mLoadedChecks);
+        }
+    }
+
+    public class CheckCreateResponseCallback extends ResponseCallback<BaseResponse> {
+        private final MutableLiveData<Progress> mLiveData;
+
+        CheckCreateResponseCallback(MutableLiveData<Progress> liveData) {
+            mLiveData = liveData;
+        }
+
+        @Override
+        public void onOk(BaseResponse response) {
+            mLiveData.postValue(Progress.SUCCESS);
+        }
+
+        @Override
+        public void onError(ErrorResponse response) {
+            mLiveData.postValue(Progress.FAILED);
         }
     }
 }
