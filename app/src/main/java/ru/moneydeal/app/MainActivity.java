@@ -1,11 +1,13 @@
 package ru.moneydeal.app;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
+import ru.moneydeal.app.pages.CheckFragment;
 import ru.moneydeal.app.pages.GroupCreationFragment;
 import ru.moneydeal.app.pages.GroupFragment;
 import ru.moneydeal.app.pages.GroupListFragment;
@@ -81,6 +83,17 @@ public class MainActivity extends AppCompatActivity implements IRouter {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, new GroupCreationFragment())
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void showCheck(@NonNull String checkId) {
+        CheckFragment instance = CheckFragment.getInstance(checkId);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, instance)
                 .addToBackStack(null)
                 .commit();
     }

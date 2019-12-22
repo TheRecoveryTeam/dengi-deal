@@ -1,7 +1,6 @@
 package ru.moneydeal.app.pages;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import ru.moneydeal.app.CheckViewModel;
+import ru.moneydeal.app.IRouter;
 import ru.moneydeal.app.R;
 import ru.moneydeal.app.checks.CheckEntity;
 import ru.moneydeal.app.checks.CheckRepo;
@@ -101,6 +103,7 @@ public class GroupChecksFragment extends Fragment {
             holder.mNameView.setText(data.name);
             holder.mDescriptionView.setText(data.description);
             holder.mAmountView.setText(getString(R.string.amount_string, data.amount));
+
         }
 
         @Override
@@ -120,6 +123,31 @@ public class GroupChecksFragment extends Fragment {
             mNameView = itemView.findViewById(R.id.group_check_name);
             mDescriptionView = itemView.findViewById(R.id.group_check_description);
             mAmountView = itemView.findViewById(R.id.group_check_amount);
+
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                CheckRepo.GroupChecks data = mDataAdapter.mData;
+                if (data == null) {
+                    return;
+                }
+
+                List<CheckEntity> entities = data.entities;
+                if (entities == null || position > entities.size()) {
+                    return;
+                }
+
+                CheckEntity entity = entities.get(position);
+                if (entity == null) {
+                    return;
+                }
+
+                IRouter activity = (IRouter) getActivity();
+                if (activity == null) {
+                    return;
+                }
+
+                activity.showCheck(entity.id);
+            });
         }
     }
 }

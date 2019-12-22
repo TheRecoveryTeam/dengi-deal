@@ -19,6 +19,7 @@ import ru.moneydeal.app.network.ResponseCallback;
 
 public class CheckRepo {
     private final ApiRepo mApiRepo;
+    private GroupChecks mLoadedChecks;
 
     public CheckRepo(ApplicationModified context) {
         mApiRepo = context.getApis();
@@ -31,11 +32,26 @@ public class CheckRepo {
 
     public LiveData<GroupChecks> fetchChecks(String groupId) {
         MutableLiveData<GroupChecks> liveData = new MutableLiveData<>();
-        liveData.setValue(new GroupChecks());
+        mLoadedChecks = new GroupChecks();
+        liveData.setValue(mLoadedChecks);
 
         processFetchChecks(liveData, groupId);
 
         return liveData;
+    }
+
+    public CheckEntity getLoadedCheck(String checkId) {
+        if (mLoadedChecks == null || mLoadedChecks.entities == null) {
+            return null;
+        }
+
+        for (CheckEntity checkEntity : mLoadedChecks.entities) {
+            if (checkEntity.id.equals(checkId)) {
+                return checkEntity;
+            }
+        }
+
+        return null;
     }
 
     private void processFetchChecks(MutableLiveData<GroupChecks> liveData, String groupId) {
@@ -102,18 +118,21 @@ public class CheckRepo {
                 }
 
                 Log.d("CheckRepo", "fetch ok with check count" + checks.size());
-                mLiveData.postValue(new GroupChecks(Progress.SUCCESS, checkEntities));
+                mLoadedChecks = new GroupChecks(Progress.SUCCESS, checkEntities);
             }
             catch (Exception e) {
                 Log.d("CheckRepo", "fetch error " + e.getMessage());
-                mLiveData.postValue(new GroupChecks(Progress.FAILED, new ArrayList<>()));
+                mLoadedChecks = new GroupChecks(Progress.FAILED, new ArrayList<>());
             }
+
+            mLiveData.postValue(mLoadedChecks);
         }
 
         @Override
         public void onError(ErrorResponse response) {
             Log.d("CheckRepo", "fetch error " + response.data.message);
-            mLiveData.postValue(new GroupChecks(Progress.FAILED, new ArrayList<>()));
+            mLoadedChecks = new GroupChecks(Progress.FAILED, new ArrayList<>());
+            mLiveData.postValue(mLoadedChecks);
         }
     }
 }
