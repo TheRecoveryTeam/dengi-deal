@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacingM"
+    android:nestedScrollingEnabled="false"
+    >
 
     <TextView
         android:id="@+id/group_checks_title"
@@ -23,8 +26,20 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_below="@id/group_checks_title"
+        android:nestedScrollingEnabled="false"
         android:orientation="horizontal"
         android:padding="@dimen/spacingS"
         />
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/group_checks_add_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/add_new_check"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:paddingLeft="@dimen/spacingM"
+        android:paddingRight="@dimen/spacingM"
+        />
+</LinearLayout>

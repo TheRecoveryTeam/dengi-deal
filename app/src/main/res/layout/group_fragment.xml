@@ -1,51 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/spacingS">
-
-    <TextView
-        android:id="@+id/group_item_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/fontSizeH1"
-        android:textStyle="bold"
-        android:text="@string/group_name"
-        />
-
-    <TextView
-        android:layout_marginTop="@dimen/spacingS"
-        android:id="@+id/group_item_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="@dimen/fontSizeM"
-        android:text="@string/group_description"
-        android:layout_marginBottom="@dimen/spacingS"
-        />
-
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
-        android:id="@+id/group_users_container"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="@dimen/spacingS"
+        android:padding="@dimen/spacingS">
+
+        <TextView
+            android:id="@+id/group_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/fontSizeH1"
+            android:textStyle="bold"
+            android:text="@string/group_name"
+            />
+
+        <TextView
+            android:layout_marginTop="@dimen/spacingS"
+            android:id="@+id/group_item_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fontSizeM"
+            android:text="@string/group_description"
+            android:layout_marginBottom="@dimen/spacingS"
+            />
+
+
+        <LinearLayout
+            android:id="@+id/group_users_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/spacingS"
+            />
+
+        <LinearLayout
+            android:id="@+id/group_add_participant_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/spacingS"
         />
 
-    <LinearLayout
-        android:id="@+id/group_add_participant_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="@dimen/spacingS"
-        />
-
-    <LinearLayout
-        android:id="@+id/group_checks_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        />
-</LinearLayout>
+        <LinearLayout
+            android:id="@+id/group_checks_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            />
+    </LinearLayout>
+</ScrollView>
