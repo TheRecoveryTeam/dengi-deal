@@ -54,10 +54,10 @@ public class GroupViewModel extends AndroidViewModel {
     }
 
     public void fetchGroups() {
+        final LiveData<List<GroupEntity>> progressLiveData = GroupRepo.getInstance(getApplication()).fetchGroups();
+
         if (!connectedToGroupList) {
             connectedToGroupList = true;
-
-            final LiveData<List<GroupEntity>> progressLiveData = GroupRepo.getInstance(getApplication()).fetchGroups();
             mGroupState.addSource(progressLiveData, groups -> {
                 mGroupState.postValue(groups);
             });

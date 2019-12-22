@@ -1,6 +1,7 @@
 package ru.moneydeal.app.pages;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,6 @@ import java.util.List;
 
 import ru.moneydeal.app.GroupViewModel;
 import ru.moneydeal.app.IRouter;
-import ru.moneydeal.app.MainActivity;
 import ru.moneydeal.app.R;
 import ru.moneydeal.app.group.GroupEntity;
 
@@ -37,6 +37,7 @@ public class GroupListFragment extends Fragment {
         View view = inflater.inflate(R.layout.group_list_fragment, container, false);
 
         mGroupViewModel = new ViewModelProvider(getActivity()).get(GroupViewModel.class);
+        Log.d("@", "onCreateView");
         mGroupViewModel.fetchGroups();
 
         bindRecyclerView(view);

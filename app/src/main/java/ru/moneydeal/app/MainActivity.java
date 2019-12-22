@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements IRouter {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, new GroupCreationFragment())
+                .addToBackStack(null)
                 .commit();
     }
 }

@@ -44,6 +44,7 @@ public class GroupFragment extends Fragment {
         return view;
     }
 
+
     private void bindViews(View view) {
         mName = view.findViewById(R.id.group_item_name);
         mDescription = view.findViewById(R.id.group_item_description);
