@@ -13,6 +13,7 @@ import ru.moneydeal.app.group.GroupDao;
 import ru.moneydeal.app.auth.AuthEntity;
 import ru.moneydeal.app.group.GroupEntity;
 import ru.moneydeal.app.group.GroupUserEntity;
+import ru.moneydeal.app.group.StatisticEntity;
 import ru.moneydeal.app.userList.UserDao;
 import ru.moneydeal.app.userList.UserEntity;
 
@@ -21,6 +22,7 @@ import ru.moneydeal.app.userList.UserEntity;
         GroupEntity.class,
         GroupUserEntity.class,
         UserEntity.class,
+        StatisticEntity.class
 }, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 

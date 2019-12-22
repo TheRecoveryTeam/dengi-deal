@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spacingM">
+
+    <TextView
+        android:id="@+id/from_stats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:text="@string/group_name"
+        android:textSize="@dimen/fontSizeM"
+        />
+
+    <TextView
+        android:id="@+id/to_stats"
+        android:layout_below="@+id/from_stats"
+        android:textSize="@dimen/fontSizeS"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/group_description"
+        android:layout_marginTop="@dimen/spacingS"
+        />
+
+    <TextView
+        android:id="@+id/amount_stats"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/spacingM"
+
+        android:ellipsize="none"
+        android:minWidth="100dp"
+        android:singleLine="true"
+        android:text="@string/amount_string"
+        android:textSize="@dimen/fontSizeH2"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold" />
+
+</RelativeLayout>

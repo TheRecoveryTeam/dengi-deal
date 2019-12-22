@@ -53,5 +53,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             />
+
+        <Button
+            android:id="@+id/group_show_stat_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/show_stat"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:paddingLeft="@dimen/spacingM"
+            android:paddingRight="@dimen/spacingM"
+            android:layout_marginTop="@dimen/spacingM"
+            />
     </LinearLayout>
 </ScrollView>

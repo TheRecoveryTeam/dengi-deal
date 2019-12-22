@@ -10,4 +10,5 @@ public interface IRouter {
     void showGroupCreation();
     void showCheck(@NonNull String checkId);
     void showCheckCreate(@NonNull String groupId);
+    void showStatistics(@NonNull String groupId);
 }

@@ -69,6 +69,7 @@ public class GroupRepo {
         AsyncTask.execute(() -> {
             List<GroupEntity> groupsEntities = new ArrayList<>();
             List<GroupUserEntity> groupUserEntities = new ArrayList<>();
+            List<StatisticEntity> statisticEntities = new ArrayList<>();
 
             try {
                 for (GroupApi.Group group: data.groups) {
@@ -79,13 +80,20 @@ public class GroupRepo {
                         GroupUserEntity uEntity = new GroupUserEntity(group._id, userId);
                         groupUserEntities.add(uEntity);
                     }
+
+                    for (GroupApi.Statistic stat: group.statistics) {
+                        StatisticEntity sEntity = new StatisticEntity(group._id, stat.from, stat.to, stat.amount);
+                        statisticEntities.add(sEntity);
+                    }
                 }
 
                 mUsersRepo.addUsers(data.users);
+                Log.d("GroupRepo", "stataaaaa" + statisticEntities.size());
 
                 mGroupDao.reset();
                 mGroupDao.insert(groupsEntities);
                 mGroupDao.insetGroupUsers(groupUserEntities);
+                mGroupDao.insertStatistics(statisticEntities);
                 mGroupData.postValue(groupsEntities);
             } catch (Exception e) {
                 Log.d("GroupRepo", "failed" + e.getMessage());
@@ -102,6 +110,23 @@ public class GroupRepo {
                 liveData.postValue(null);
             } else {
                 liveData.postValue(list.get(0));
+            }
+        });
+
+        return liveData;
+    }
+
+    public LiveData<List<StatisticEntity>> getStatistics(String groupId) {
+        MutableLiveData<List<StatisticEntity>> liveData = new MutableLiveData<>();
+
+        AsyncTask.execute(() -> {
+            List<StatisticEntity> list = mGroupDao.selectStatistics(groupId);
+            Log.d("GroupRepo", " statistics size " + list.size());
+
+            if (list.size() == 0) {
+                liveData.postValue(null);
+            } else {
+                liveData.postValue(list);
             }
         });
 

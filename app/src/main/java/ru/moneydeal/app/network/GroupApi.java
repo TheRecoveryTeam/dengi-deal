@@ -25,6 +25,20 @@ public interface GroupApi {
 
         @NonNull
         public List<String> users_ids;
+
+        @NonNull
+        public List<Statistic> statistics;
+    }
+
+    public static class Statistic {
+        @NonNull
+        public String from;
+
+        @NonNull
+        public String to;
+
+        @NonNull
+        public Integer amount;
     }
 
     public static class GroupData {

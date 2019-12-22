@@ -1,6 +1,7 @@
 <resources>
     <string name="appName">Money Deal</string>
     <string name="historyName">History</string>
+    <string name="statsTitle">Statistics</string>
     <string name="loginInputText">Login</string>
     <string name="passwordInputText">Password</string>
     <string name="registerButtonText">Register</string>
@@ -32,6 +33,7 @@
     <string name="user_not_found">No such user or user is already participant</string>
     <string name="check_chunks_title_text">Amount chunks</string>
     <string name="add_new_check">Add new check</string>
+    <string name="show_stat">Show statistics</string>
     <string name="create_check">Create check</string>
     <string name="check_name_placeholder">Check name</string>
     <string name="check_description_placeholder">Description</string>

@@ -13,6 +13,9 @@ public interface GroupDao {
     void insert(List<GroupEntity> entities);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertStatistics(List<StatisticEntity> entities);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insetGroupUsers(List<GroupUserEntity> entities);
 
     @Query("DELETE FROM `group`")
@@ -26,4 +29,7 @@ public interface GroupDao {
 
     @Query("SELECT userId FROM group_users WHERE groupId = :groupId")
     List<String> selectGroupUsers(String groupId);
+
+    @Query("SELECT * FROM statistics WHERE groupId = :groupId")
+    List<StatisticEntity> selectStatistics(String groupId);
 }

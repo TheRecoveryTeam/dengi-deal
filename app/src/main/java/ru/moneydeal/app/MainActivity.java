@@ -15,6 +15,7 @@ import ru.moneydeal.app.pages.GroupListFragment;
 import ru.moneydeal.app.pages.LoginFragment;
 import ru.moneydeal.app.pages.RegisterFragment;
 import ru.moneydeal.app.pages.SplashFragment;
+import ru.moneydeal.app.pages.StatisticsFragment;
 
 public class MainActivity extends AppCompatActivity implements IRouter {
 
@@ -95,6 +96,17 @@ public class MainActivity extends AppCompatActivity implements IRouter {
     @Override
     public void showCheckCreate(@NonNull String groupId) {
         CheckCreateFragment instance = CheckCreateFragment.getInstance(groupId);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, instance)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void showStatistics(@NonNull String groupId) {
+        StatisticsFragment instance = StatisticsFragment.getInstance(groupId);
 
         getSupportFragmentManager()
                 .beginTransaction()

@@ -14,6 +14,7 @@ import java.util.List;
 import ru.moneydeal.app.group.GroupEntity;
 import ru.moneydeal.app.group.GroupRepo;
 import ru.moneydeal.app.group.ParticipantEntity;
+import ru.moneydeal.app.group.StatisticEntity;
 import ru.moneydeal.app.network.GroupApi;
 import ru.moneydeal.app.userList.UserEntity;
 import ru.moneydeal.app.userList.UsersRepo;
@@ -55,6 +56,19 @@ public class GroupViewModel extends AndroidViewModel {
                 mGroupUsersResult.removeSource(users);
             });
         });
+    }
+
+    public MediatorLiveData<List<StatisticEntity>> getStatistics(String groupId) {
+        final LiveData<List<StatisticEntity>> progressLiveData
+                = GroupRepo.getInstance(getApplication()).getStatistics(groupId);
+
+        MediatorLiveData<List<StatisticEntity>> statistics = new MediatorLiveData<>();
+
+        statistics.addSource(progressLiveData, stat -> {
+            statistics.postValue(stat);
+            statistics.removeSource(progressLiveData);
+        });
+        return statistics;
     }
 
     public MediatorLiveData<List<UserEntity>> getGroupUsers() {
