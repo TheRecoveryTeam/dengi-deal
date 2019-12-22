@@ -1,6 +1,7 @@
 package ru.moneydeal.app.network;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface GroupApi {
     public static class Group {
@@ -38,13 +40,35 @@ public interface GroupApi {
         public Group data;
     }
 
+    public static class ParticipantData {
+        @Nullable
+        public UserApi.User user;
+    }
+
+    public static class GroupParticipantResponse extends BaseResponse {
+        public ParticipantData data;
+    }
+    public static class AddParticipantResponse extends BaseResponse {
+        public ParticipantData data;
+    }
+
     @GET("group/list")
     Call<GroupsResponse> fetchGroups();
+
+    @GET("group/participant")
+    Call<GroupParticipantResponse> getParticipant(@Query("login") String login, @Query("group_id") String groupId);
 
     @FormUrlEncoded
     @POST("group/create")
     Call<GroupCreationResponse> createGroup(
             @Field("name") String name,
             @Field("description") String description
+    );
+
+    @FormUrlEncoded
+    @POST("group/add_user")
+    Call<AddParticipantResponse> addUser(
+            @Field("user_id") String userId,
+            @Field("group_id") String groupId
     );
 }

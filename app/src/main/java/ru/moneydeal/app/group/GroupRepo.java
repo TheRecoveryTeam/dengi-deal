@@ -54,6 +54,17 @@ public class GroupRepo {
         return mGroupData;
     }
 
+    public LiveData<ParticipantEntity> fetchParticipant(String login, String groupId) {
+        MutableLiveData<ParticipantEntity> participant = new MutableLiveData<>();
+
+        AsyncTask.execute(() -> {
+            GroupApi api = mApiRepo.getGroupApi();
+            api.getParticipant(login, groupId).enqueue(new GroupParticipantResponseCallback(participant));
+        });
+
+        return participant;
+    }
+
     private void saveGroups(GroupApi.GroupData data) {
         AsyncTask.execute(() -> {
             List<GroupEntity> groupsEntities = new ArrayList<>();
@@ -118,6 +129,16 @@ public class GroupRepo {
         return mCreationProgress;
     }
 
+    public LiveData<ParticipantEntity> addParticipant(@NonNull String userId,
+                               @NonNull String groupId) {
+        MutableLiveData<ParticipantEntity> participant = new MutableLiveData<>();
+
+        GroupApi api = mApiRepo.getGroupApi();
+        api.addUser(userId, groupId).enqueue(new GroupAddParticipantResponseCallback(participant, groupId));
+
+        return participant;
+    }
+
     public enum CreationProgress {
         NONE,
         IN_PROGRESS,
@@ -130,6 +151,80 @@ public class GroupRepo {
         public void onOk(GroupApi.GroupsResponse response) {
             Log.d("GroupRepo", "fetch ok");
             saveGroups(response.data);
+        }
+
+        @Override
+        public void onError(ErrorResponse response) {
+            Log.d("GroupRepo", "fetch error " + response.data.message);
+        }
+    }
+
+    public class GroupAddParticipantResponseCallback extends ResponseCallback<GroupApi.AddParticipantResponse> {
+        String mGroupId;
+        MutableLiveData<ParticipantEntity> mParticipant;
+
+        public GroupAddParticipantResponseCallback(MutableLiveData<ParticipantEntity> participant, String groupId) {
+            mGroupId = groupId;
+            mParticipant = participant;
+        }
+        private void saveParticipant(GroupApi.ParticipantData data) {
+            AsyncTask.execute(() -> {
+                List<GroupUserEntity> groupUserEntities = new ArrayList<>();
+
+                if (data.user == null) {
+                    return;
+                }
+                try {
+                    GroupUserEntity user = new GroupUserEntity(mGroupId, data.user._id);
+                    ParticipantEntity participant = new ParticipantEntity(
+                            data.user._id,
+                            data.user.login,
+                            data.user.first_name,
+                            data.user.last_name);
+
+                    groupUserEntities.add(user);
+                    mGroupDao.reset();
+                    mGroupDao.insetGroupUsers(groupUserEntities);
+                    mParticipant.postValue(participant);
+                } catch (Exception e) {
+                    Log.d("GroupRepo", "failed" + e.getMessage());
+                }
+            });
+        }
+
+        @Override
+        public void onOk(GroupApi.AddParticipantResponse response) {
+            Log.d("GroupRepo", "fetch ok");
+            saveParticipant(response.data);
+        }
+
+        @Override
+        public void onError(ErrorResponse response) {
+            Log.d("GroupRepo", "fetch error " + response.data.message);
+        }
+    }
+
+    public class GroupParticipantResponseCallback extends ResponseCallback<GroupApi.GroupParticipantResponse> {
+        MutableLiveData<ParticipantEntity> mParticipant;
+
+        private void saveParticipant(GroupApi.ParticipantData data) {
+            if (data.user == null) {
+                mParticipant.postValue(null);
+                return;
+            }
+            ParticipantEntity participant = new ParticipantEntity(data.user._id, data.user.login, data.user.first_name, data.user.last_name);
+
+            mParticipant.postValue(participant);
+        }
+
+        public GroupParticipantResponseCallback(MutableLiveData<ParticipantEntity> participant) {
+            mParticipant = participant;
+        }
+
+        @Override
+        public void onOk(GroupApi.GroupParticipantResponse response) {
+            Log.d("GroupRepo", "fetch participant");
+            saveParticipant(response.data);
         }
 
         @Override

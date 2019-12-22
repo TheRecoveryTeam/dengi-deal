@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingRight="@dimen/fontSizeM"
+    android:paddingLeft="@dimen/fontSizeM">
+
+    <TextView
+        android:id="@+id/group_add_participants_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="@string/group_add_participants_text"
+        android:textAlignment="textStart"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="@dimen/fontSizeM"
+        android:padding="@dimen/spacingS"
+        />
+
+    <EditText
+        android:id="@+id/participantLoginInput"
+        android:layout_width="@dimen/phoneInputWidth"
+        android:layout_height="@dimen/inputHeight"
+        android:layout_below="@id/group_add_participants_title"
+        android:layout_alignParentLeft="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/spacingS"
+        android:inputType="text"
+        android:hint="@string/participantLogin"
+        />
+
+    <Button
+        android:id="@+id/searchParticipantButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:layout_below="@id/group_add_participants_title"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="@dimen/spacingM"
+        android:paddingRight="@dimen/spacingM"
+        android:text="@string/searchParticipantButtonText"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        />
+
+    <TextView
+        android:id="@+id/group_participant_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:layout_below="@id/participantLoginInput"
+        android:text="@string/group_name"
+        android:textSize="@dimen/fontSizeM"
+        android:visibility="invisible"
+        android:layout_marginTop="@dimen/spacingM"
+        />
+
+    <Button
+        android:id="@+id/group_participant_button"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:layout_below="@id/searchParticipantButton"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="@dimen/spacingS"
+        android:paddingRight="@dimen/spacingS"
+        android:text="@string/addParticipantButtonText"
+        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/spacingM"
+        />
+
+</RelativeLayout>
