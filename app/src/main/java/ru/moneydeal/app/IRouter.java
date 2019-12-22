@@ -3,6 +3,8 @@ package ru.moneydeal.app;
 import androidx.annotation.NonNull;
 
 public interface IRouter {
+    void back();
+
     void showRegister();
     void showHistory();
     void showLogin();

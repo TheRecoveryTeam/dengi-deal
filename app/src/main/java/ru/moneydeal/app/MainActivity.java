@@ -41,6 +41,11 @@ public class MainActivity extends AppCompatActivity implements IRouter {
     }
 
     @Override
+    public void back() {
+        getSupportFragmentManager().popBackStack();
+    }
+
+    @Override
     public void showRegister() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new RegisterFragment())

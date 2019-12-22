@@ -8,7 +8,7 @@ public class CheckChunkEntity {
 
     public Integer amount;
 
-    CheckChunkEntity(String checkId, String userId, Integer amount) {
+    public CheckChunkEntity(String checkId, String userId, Integer amount) {
         this.checkId = checkId;
         this.userId = userId;
         this.amount = amount;

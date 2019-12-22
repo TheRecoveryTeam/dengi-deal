@@ -88,10 +88,12 @@ public class GroupChecksFragment extends Fragment {
                 return;
             }
 
-            mCheckViewModel.getChecks(mGroupId).observe(getViewLifecycleOwner(), data -> {
+            mCheckViewModel.getChecks().observe(getViewLifecycleOwner(), data -> {
                 mData = data;
                 this.notifyDataSetChanged();
             });
+
+            mCheckViewModel.fetchChecks(mGroupId);
         }
 
         @NonNull
