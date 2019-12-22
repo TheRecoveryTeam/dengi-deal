@@ -27,5 +27,12 @@
     <string name="amount_string">%1$d ₽</string>
     <string name="check_chunks_title_text">Amount chunks</string>
     <string name="add_new_check">Add new check</string>
+    <string name="create_check">Create check</string>
+    <string name="check_name_placeholder">Check name</string>
+    <string name="check_description_placeholder">Description</string>
+    <string name="amount">Amount</string>
+    <string name="split_for_equal_chunks">Split for equal chunks</string>
+    <string name="split_for_unequal_chunks">Split for unequal chunks</string>
+    <string name="save">Save</string>
 
 </resources>
