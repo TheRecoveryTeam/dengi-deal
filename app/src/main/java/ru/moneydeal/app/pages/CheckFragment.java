@@ -94,6 +94,15 @@ public class CheckFragment extends Fragment {
         return getString(R.string.user_full_name, userEntity.firstName, userEntity.lastName);
     }
 
+    private String getUserLogin(String userId) {
+        UserEntity userEntity = mUsers.get(userId);
+        if (userEntity == null) {
+            return getString(R.string.user_unknown);
+        }
+
+        return userEntity.login;
+    }
+
     private void bindRecyclerView(View view) {
         mRecyclerView = view.findViewById(R.id.check_chunks_list);
 
@@ -121,6 +130,8 @@ public class CheckFragment extends Fragment {
 
             holder.mAmountView.setText(getString(R.string.amount_string, data.amount));
             holder.mNameView.setText(getUserFullName(data.userId));
+
+            holder.mLoginView.setText(getUserLogin(data.userId));
         }
 
         @Override
@@ -132,12 +143,14 @@ public class CheckFragment extends Fragment {
     class MyViewHolder extends RecyclerView.ViewHolder {
         private final TextView mNameView;
         private final TextView mAmountView;
+        private final TextView mLoginView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             mNameView = itemView.findViewById(R.id.check_chunk_name);
             mAmountView = itemView.findViewById(R.id.check_chunk_amount);
+            mLoginView = itemView.findViewById(R.id.check_chunk_login);
         }
     }
 }
