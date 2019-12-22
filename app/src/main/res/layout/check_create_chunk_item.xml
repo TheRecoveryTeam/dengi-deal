@@ -39,6 +39,7 @@
         android:layout_height="40dp"
         android:hint="@string/amount"
         android:layout_gravity="center_vertical"
+        android:inputType="number"
         />
 
     <TextView
