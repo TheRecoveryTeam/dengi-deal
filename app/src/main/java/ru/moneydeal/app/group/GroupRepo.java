@@ -91,9 +91,13 @@ public class GroupRepo {
                 Log.d("GroupRepo", "stataaaaa" + statisticEntities.size());
 
                 mGroupDao.reset();
+                mGroupDao.resetGroupUsers();;
+                mGroupDao.resetStatistics();
+
                 mGroupDao.insert(groupsEntities);
                 mGroupDao.insetGroupUsers(groupUserEntities);
                 mGroupDao.insertStatistics(statisticEntities);
+
                 mGroupData.postValue(groupsEntities);
             } catch (Exception e) {
                 Log.d("GroupRepo", "failed" + e.getMessage());

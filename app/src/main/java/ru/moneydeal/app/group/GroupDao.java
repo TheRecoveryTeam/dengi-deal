@@ -21,6 +21,12 @@ public interface GroupDao {
     @Query("DELETE FROM `group`")
     void reset();
 
+    @Query("DELETE FROM `statistics`")
+    void resetStatistics();
+
+    @Query("DELETE FROM `group_users`")
+    void resetGroupUsers();
+
     @Query("SELECT * FROM `group`")
     List<GroupEntity> getGroups();
 
